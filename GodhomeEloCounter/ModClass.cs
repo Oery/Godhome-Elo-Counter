@@ -20,6 +20,7 @@ namespace GodhomeEloCounter
         private bool isPlayerFighting;
         private bool isPlayerDead;
         private string currentScene;
+        private List<string> whitelistedScenes = new List<string>() { "GG_Workshop", "GG_Atrium" };
 
         private DateTime _startTime;
         private DateTime _endTime;
@@ -78,7 +79,7 @@ namespace GodhomeEloCounter
             Log($"Loading new scene = {name}");
 
             if (name == "GG_Workshop" && isPlayerFighting) { OnBossExit(name); }
-            if (currentScene == "GG_Workshop" && name != currentScene) { OnBossEnter(name); }
+            if (currentScene == "GG_Workshop" && !whitelistedScenes.Contains(name)) { OnBossEnter(name); }
 
             if (name == "GG_Workshop") { currentScene = name; }
 
