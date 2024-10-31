@@ -7,7 +7,7 @@ namespace GodhomeEloCounter
     {
         public static void SpawnBossUI(LayoutRoot layout, Boss boss) {
             string sceneName = BossMappings.GetDisplayFromScene(boss.sceneName);
-            string eloString = $"Elo: {boss.elo} ({boss.bestWinStreak})";
+            string eloString = $"Elo: {boss.RoundedElo()} ({boss.RoundedElo() - boss.RoundedLastElo()})";
             string streakString = $"Streak: {boss.streak} / Best: {boss.bestWinStreak}";
             string winLossString = $"Wins: {boss.wins} / Losses: {boss.losses}";
             string timeString = $"Time: {boss.timeSpent:hh\\:mm\\:ss}";
@@ -30,23 +30,26 @@ namespace GodhomeEloCounter
 
             textUI += $"{BossMappings.GetDisplayFromStatue(name)}\n\n";
 
-            Boss attuned = data.FindOrCreateBoss(name, 0);
+            string attunedSceneName = BossMappings.GetSceneFromStatue(name);
+            Boss attuned = data.FindOrCreateBoss(attunedSceneName, 0);
             textUI += "Attuned\n";
-            textUI +=  $"Elo: {attuned.elo} ({attuned.bestWinStreak})\n";
+            textUI +=  $"Elo: {attuned.RoundedElo()} ({attuned.RoundedElo() - attuned.RoundedLastElo()})\n";
             textUI +=  $"Streak: {attuned.streak} / Best: {attuned.bestWinStreak}\n";
             textUI +=  $"Wins: {attuned.wins} / Losses: {attuned.losses}\n";
             textUI +=  $"Time: {attuned.timeSpent:hh\\:mm\\:ss}\n\n";
 
-            Boss ascended = data.FindOrCreateBoss(name, 1);
+            string ascendedSceneName = BossMappings.GetSceneFromStatue(name);
+            Boss ascended = data.FindOrCreateBoss(ascendedSceneName, 1);
             textUI += "Ascended\n";
-            textUI +=  $"Elo: {ascended.elo} ({ascended.bestWinStreak})\n";
+            textUI +=  $"Elo: {ascended.RoundedElo()} ({ascended.RoundedElo() - ascended.RoundedLastElo()})\n";
             textUI +=  $"Streak: {ascended.streak} / Best: {ascended.bestWinStreak}\n";
             textUI +=  $"Wins: {ascended.wins} / Losses: {ascended.losses}\n";
             textUI +=  $"Time: {ascended.timeSpent:hh\\:mm\\:ss}\n\n";
 
-            Boss radiant = data.FindOrCreateBoss(name, 2);
+            string radiantSceneName = BossMappings.GetSceneFromStatue(name);
+            Boss radiant = data.FindOrCreateBoss(radiantSceneName, 2);
             textUI += "Radiant\n";
-            textUI +=  $"Elo: {radiant.elo} ({radiant.bestWinStreak})\n";
+            textUI +=  $"Elo: {radiant.RoundedElo()} ({radiant.RoundedElo() - radiant.RoundedLastElo()})\n";
             textUI +=  $"Streak: {radiant.streak} / Best: {radiant.bestWinStreak}\n";
             textUI +=  $"Wins: {radiant.wins} / Losses: {radiant.losses}\n";
             textUI +=  $"Time: {radiant.timeSpent:hh\\:mm\\:ss}\n\n";
