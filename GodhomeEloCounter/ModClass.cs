@@ -69,9 +69,9 @@ namespace GodhomeEloCounter
             TimeSpan timeSpan = _endTime - _startTime;
             _localData.UpdateBoss(currentScene, has_won, timeSpan);
 
-            currentScene = sceneName;
-
             Log("Finished fight against " + currentScene);
+
+            currentScene = sceneName;
         }
 
         private string OnSceneLoad(string name)
