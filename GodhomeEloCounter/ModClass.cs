@@ -21,7 +21,7 @@ namespace GodhomeEloCounter
         private bool isPlayerFighting;
         private bool isPlayerDead;
         private string currentScene;
-        private List<string> whitelistedScenes = new List<string>() { "GG_Workshop", "GG_Atrium" };
+        private readonly List<string> whitelistedScenes = ["GG_Workshop", "GG_Atrium"];
 
         private int tier = 0;
 
