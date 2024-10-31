@@ -1,4 +1,4 @@
-﻿using MagicUI.Core;
+using MagicUI.Core;
 using Modding;
 using System;
 using System.Collections.Generic;
@@ -56,7 +56,7 @@ namespace GodhomeEloCounter
 
         public bool ToggleButtonInsideMenu => true;
 
-        private List<LayoutRoot> layouts = [];
+        private readonly List<LayoutRoot> layouts = [];
 
         private int OnDamageTaken(int damage)
         {
