@@ -6,7 +6,7 @@ namespace GodhomeEloCounter {
 
     [Serializable]
     public class LocalData { 
-        public List<Boss> bosses = new List<Boss>();
+        public List<Boss> bosses = [];
 
         public void UpdateBoss(string sceneName, int tier, bool hasWon, TimeSpan timeSpan) {
             Boss boss = FindOrCreateBoss(sceneName, tier);
