@@ -11,6 +11,8 @@ namespace GodhomeEloCounter
     {
         internal static GodhomeEloCounter Instance;
 
+        public GodhomeEloCounter() : base("Godhome Elo Counter") {}
+
         public override string GetVersion() => "v0.1";
 
         //public override List<ValueTuple<string, string>> GetPreloadNames()
