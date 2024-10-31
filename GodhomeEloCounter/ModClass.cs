@@ -14,6 +14,7 @@ namespace GodhomeEloCounter
 
         private bool isPlayerFighting;
         private bool isPlayerDead;
+        private string currentBoss;
         private List<string> peacefulScenes = new List<string> { "GG_Atrium", "GG_Workshop", "GG_Blue_Room" };
 
         public override void Initialize(Dictionary<string, Dictionary<string, GameObject>> preloadedObjects)
@@ -34,10 +35,12 @@ namespace GodhomeEloCounter
             return damage;
         }
 
-        private void OnBossEnter()
+        private void OnBossEnter(string sceneName)
         {
             isPlayerFighting = true;
             isPlayerDead = false;
+            currentBoss = sceneName;
+            Log($"Started fight against {currentBoss}");
         }
 
         private void OnBossExit() 
@@ -47,6 +50,8 @@ namespace GodhomeEloCounter
 
             isPlayerFighting = false;
             isPlayerDead = false;
+
+            currentBoss = null;
         }
 
         private string OnSceneLoad(string name)
@@ -59,7 +64,7 @@ namespace GodhomeEloCounter
                 return name;
             }
 
-            OnBossEnter();
+            OnBossEnter(name);
 
             return name;
         }
