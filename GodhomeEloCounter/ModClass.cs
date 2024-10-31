@@ -1,4 +1,4 @@
-﻿using MagicUI.Core;
+using MagicUI.Core;
 using Modding;
 using System;
 using System.Collections.Generic;
@@ -23,6 +23,8 @@ namespace GodhomeEloCounter
         private string currentScene;
         private List<string> whitelistedScenes = new List<string>() { "GG_Workshop", "GG_Atrium" };
 
+        private int tier = 0;
+
         private DateTime _startTime;
         private DateTime _endTime;
 
@@ -32,6 +34,13 @@ namespace GodhomeEloCounter
 
             ModHooks.BeforeSceneLoadHook += OnSceneLoad;
             ModHooks.TakeHealthHook += OnDamageTaken;
+            On.BossChallengeUI.LoadBoss_int += OnBossLevelSelect;
+        }
+
+        private void OnBossLevelSelect(On.BossChallengeUI.orig_LoadBoss_int orig, BossChallengeUI self, int level)
+        {
+            tier = level;
+            orig(self, level);
         }
 
         public bool ToggleButtonInsideMenu => true;
@@ -65,7 +74,7 @@ namespace GodhomeEloCounter
             layouts.Clear();
 
             LayoutRoot layout_ui = new(true);
-            ModUI.SpawnBossUI(layout_ui, _localData.FindOrCreateBoss(sceneName));
+            ModUI.SpawnBossUI(layout_ui, _localData.FindOrCreateBoss(sceneName, tier));
             layouts.Add(layout_ui);
         }
 
@@ -82,7 +91,7 @@ namespace GodhomeEloCounter
             _endTime = DateTime.Now;
 
             TimeSpan timeSpan = _endTime - _startTime;
-            _localData.UpdateBoss(currentScene, has_won, timeSpan);
+            _localData.UpdateBoss(currentScene, tier, has_won, timeSpan);
 
             Log("Finished fight against " + currentScene);
 

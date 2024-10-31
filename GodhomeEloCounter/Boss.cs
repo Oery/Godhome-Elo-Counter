@@ -3,9 +3,11 @@
 namespace GodhomeEloCounter
 {
 	[Serializable]
-	public class Boss
-	{
-		public string sceneName;
+	public class Boss(string sceneName, int tier)
+    {
+		public string sceneName = sceneName;
+
+        public int tier = tier;
 
 		public int elo;
 
@@ -17,7 +19,7 @@ namespace GodhomeEloCounter
 
 		public TimeSpan timeSpent;
 
-		public void Update(bool hasWon, TimeSpan timeSpan) {
+        public void Update(bool hasWon, TimeSpan timeSpan) {
 			this.UpdateTime(timeSpan);
 			this.UpdateWins(hasWon);
 			this.UpdateStreak(hasWon);

@@ -8,18 +8,18 @@ namespace GodhomeEloCounter {
     public class LocalData { 
         public List<Boss> bosses = new List<Boss>();
 
-        public void UpdateBoss(string sceneName, bool hasWon, TimeSpan timeSpan) {
-            Boss boss = FindOrCreateBoss(sceneName);
+        public void UpdateBoss(string sceneName, int tier, bool hasWon, TimeSpan timeSpan) {
+            Boss boss = FindOrCreateBoss(sceneName, tier);
             boss.Update(hasWon, timeSpan);
         }
 
-        public Boss FindOrCreateBoss(string sceneName) {
+        public Boss FindOrCreateBoss(string sceneName, int tier) {
             foreach (Boss boss in bosses) {
-                if (boss.sceneName == sceneName) {
+                if (boss.sceneName == sceneName && boss.tier == tier) {
                     return boss;
                 }
             }
-            bosses.Add(new Boss() { sceneName = sceneName, elo = 0, streak = 0, bestWinStreak = 0, wins = 0, losses = 0, timeSpent = TimeSpan.Zero });
+            bosses.Add(new Boss(sceneName, tier) { elo = 0, streak = 0, bestWinStreak = 0, wins = 0, losses = 0, timeSpent = TimeSpan.Zero });
             return bosses.Last();
         }
     }
