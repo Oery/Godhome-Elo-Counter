@@ -1,4 +1,4 @@
-﻿using Modding;
+using Modding;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +10,8 @@ namespace GodhomeEloCounter
     public class GodhomeEloCounter : Mod
     {
         internal static GodhomeEloCounter Instance;
+
+        public override string GetVersion() => "v0.1";
 
         //public override List<ValueTuple<string, string>> GetPreloadNames()
         //{
