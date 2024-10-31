@@ -1,4 +1,4 @@
-using MagicUI.Core;
+﻿using MagicUI.Core;
 using Modding;
 using System;
 using System.Collections.Generic;
@@ -35,6 +35,17 @@ namespace GodhomeEloCounter
             ModHooks.BeforeSceneLoadHook += OnSceneLoad;
             ModHooks.TakeHealthHook += OnDamageTaken;
             On.BossChallengeUI.LoadBoss_int += OnBossLevelSelect;
+            On.BossChallengeUI.Setup += OnBossLevelMenu;
+        }
+
+        private void OnBossLevelMenu(On.BossChallengeUI.orig_Setup orig, BossChallengeUI self, BossStatue bossStatue, string bossNameSheet, string bossNameKey, string descriptionSheet, string descriptionKey)
+        {
+            ClearUI();
+            LayoutRoot layout = new(true);
+            ModUI.SpawnAllTierBossUI(layout, _localData, bossNameKey);
+            layouts.Add(layout);
+
+            orig(self, bossStatue, bossNameSheet, bossNameKey, descriptionSheet, descriptionKey);
         }
 
         private void OnBossLevelSelect(On.BossChallengeUI.orig_LoadBoss_int orig, BossChallengeUI self, int level)
