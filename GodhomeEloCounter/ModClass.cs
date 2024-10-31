@@ -70,14 +70,11 @@ namespace GodhomeEloCounter
 
         private void OnBossEnter(string sceneName)
         {
-            Log($"Entered Boss = {sceneName}");
             isPlayerFighting = true;
             isPlayerDead = false;
 
             currentScene = sceneName;
             _startTime = DateTime.Now;
-            Log($"Started fight against {currentScene}");
-
             RefreshUI(sceneName, tier);
         }
 
@@ -96,8 +93,6 @@ namespace GodhomeEloCounter
             TimeSpan timeSpan = _endTime - _startTime;
             _localData.UpdateBoss(currentScene, tier, has_won, timeSpan);
 
-            Log("Finished fight against " + currentScene);
-
             RefreshUI(currentScene, tier);
 
             currentScene = sceneName;
@@ -105,8 +100,6 @@ namespace GodhomeEloCounter
 
         private string OnSceneLoad(string name)
         {
-            Log($"Loading new scene = {name}");
-
             if (name == "GG_Workshop" && isPlayerFighting) { OnBossExit(name); }
             if (currentScene == "GG_Workshop" && !whitelistedScenes.Contains(name)) { OnBossEnter(name); }
 
