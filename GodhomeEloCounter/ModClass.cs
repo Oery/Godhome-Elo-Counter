@@ -1,4 +1,5 @@
 ﻿using Modding;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +16,9 @@ namespace GodhomeEloCounter
         private bool isPlayerFighting;
         private bool isPlayerDead;
         private string currentScene;
+
+        private DateTime _startTime;
+        private DateTime _endTime;
 
         public override void Initialize(Dictionary<string, Dictionary<string, GameObject>> preloadedObjects)
         {
@@ -40,6 +44,7 @@ namespace GodhomeEloCounter
             isPlayerDead = false;
 
             currentScene = sceneName;
+            _startTime = DateTime.Now;
             Log($"Started fight against {currentScene}");
         }
 
@@ -50,6 +55,10 @@ namespace GodhomeEloCounter
 
             isPlayerFighting = false;
             isPlayerDead = false;
+
+            _endTime = DateTime.Now;
+
+            TimeSpan timeSpan = _endTime - _startTime;
 
             currentScene = sceneName;
         }
