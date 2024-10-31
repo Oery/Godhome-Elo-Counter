@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UObject = UnityEngine.Object;
 
-namespace Godhome_Elo_Counter
+namespace GodhomeEloCounter
 {
-    public class Godhome_Elo_Counter : Mod
+    public class GodhomeEloCounter : Mod
     {
-        internal static Godhome_Elo_Counter Instance;
+        internal static GodhomeEloCounter Instance;
 
         //public override List<ValueTuple<string, string>> GetPreloadNames()
         //{
@@ -19,7 +19,7 @@ namespace Godhome_Elo_Counter
         //    };
         //}
 
-        //public Godhome_Elo_Counter() : base("Godhome_Elo_Counter")
+        //public GodhomeEloCounter() : base("GodhomeEloCounter")
         //{
         //    Instance = this;
         //}

@@ -9,11 +9,11 @@
         <!--<DocumentationFile>$(OutputPath)/$(AssemblyTitle).xml</DocumentationFile>-->
     </PropertyGroup>
     <PropertyGroup>
-        <RootNamespace>Godhome_Elo_Counter</RootNamespace>
-        <AssemblyName>Godhome_Elo_Counter</AssemblyName>
+        <RootNamespace>GodhomeEloCounter</RootNamespace>
+        <AssemblyName>GodhomeEloCounter</AssemblyName>
         <TargetFramework>net472</TargetFramework>
-        <AssemblyTitle>Godhome_Elo_Counter</AssemblyTitle>
-        <Product>Godhome_Elo_Counter</Product>
+        <AssemblyTitle>GodhomeEloCounter</AssemblyTitle>
+        <Product>GodhomeEloCounter</Product>
         <Description>A Hollow Knight Mod</Description>
         <Copyright>Copyright © 2024</Copyright>
         <AssemblyVersion>1.0.0.0</AssemblyVersion>
@@ -22,31 +22,17 @@
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
     <Target Name="CopyMod" AfterTargets="PostBuildEvent">
-        <RemoveDir Condition="Exists('$(ExportDir)/$(TargetName)/')"
-            Directories="$(ExportDir)/$(TargetName)/" />
+        <RemoveDir Condition="Exists('$(ExportDir)/$(TargetName)/')" Directories="$(ExportDir)/$(TargetName)/" />
         <MakeDir Directories="$(ExportDir)/$(TargetName)/" />
         <MakeDir Directories="$(ExportDir)/$(TargetName)/zip/" />
-        <MakeDir Condition="!Exists('$(HollowKnightRefs)/Mods/$(TargetName)/')"
-            Directories="$(HollowKnightRefs)/Mods/$(TargetName)/" />
+        <MakeDir Condition="!Exists('$(HollowKnightRefs)/Mods/$(TargetName)/')" Directories="$(HollowKnightRefs)/Mods/$(TargetName)/" />
 
-        <Copy Condition="'$(DocumentationFile)' != ''"
-            SourceFiles="$(TargetPath);$(TargetDir)/$(TargetName).pdb;$(TargetDir)/$(TargetName).xml"
-            DestinationFolder="$(HollowKnightRefs)/Mods/$(TargetName)/" />
-        <Copy Condition="'$(DocumentationFile)' == ''"
-            SourceFiles="$(TargetPath);$(TargetDir)/$(TargetName).pdb"
-            DestinationFolder="$(HollowKnightRefs)/Mods/$(TargetName)/" />
+        <Copy Condition="'$(DocumentationFile)' != ''" SourceFiles="$(TargetPath);$(TargetDir)/$(TargetName).pdb;$(TargetDir)/$(TargetName).xml" DestinationFolder="$(HollowKnightRefs)/Mods/$(TargetName)/" />
+        <Copy Condition="'$(DocumentationFile)' == ''" SourceFiles="$(TargetPath);$(TargetDir)/$(TargetName).pdb" DestinationFolder="$(HollowKnightRefs)/Mods/$(TargetName)/" />
 
         <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ExportDir)/$(TargetName)/" />
 
-        <Copy Condition="'$(DocumentationFile)' != ''"
-            SourceFiles="ReadMe.md;$(TargetPath);$(TargetDir)/$(TargetName).pdb;$(TargetDir)/$(TargetName).xml"
-            DestinationFolder="$(ExportDir)/$(TargetName)/zip/" />
-        <Copy Condition="'$(DocumentationFile)' == ''"
-            SourceFiles="ReadMe.md;$(TargetPath);$(TargetDir)/$(TargetName).pdb"
-            DestinationFolder="$(ExportDir)/$(TargetName)/zip/" />
-
-        <ZipDirectory SourceDirectory="$(ExportDir)/$(TargetName)/zip/"
-            DestinationFile="$(ExportDir)/$(TargetName)/$(TargetName).zip" />
+        <ZipDirectory SourceDirectory="$(ExportDir)/$(TargetName)/zip/" DestinationFile="$(ExportDir)/$(TargetName)/$(TargetName).zip" />
         <RemoveDir Directories="$(ExportDir)/$(TargetName)/zip/" />
 
         <PropertyGroup>
@@ -61,9 +47,7 @@
         <GetFileHash Files="$(ExportDir)/$(TargetName)/$(TargetName).zip" Algorithm="SHA256">
             <Output TaskParameter="Items" ItemName="ZipFilesWithHashes" />
         </GetFileHash>
-        <WriteLinesToFile File="$(ExportDir)/$(TargetName)/SHA.txt"
-            Lines="$(OutputFileString);@(FilesWithHashes->'%(FileHash)');$(OutputZipString);@(ZipFilesWithHashes->'%(FileHash)')"
-            Overwrite="true" Encoding="UTF-8" />
+        <WriteLinesToFile File="$(ExportDir)/$(TargetName)/SHA.txt" Lines="$(OutputFileString);@(FilesWithHashes->'%(FileHash)');$(OutputZipString);@(ZipFilesWithHashes->'%(FileHash)')" Overwrite="true" Encoding="UTF-8" />
     </Target>
     <ItemGroup>
         <Reference Include="Assembly-CSharp">
@@ -339,8 +323,6 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <None Include=".gitignore" />
-        <None Include="ReadMe.md" />
         <None Include="Resources\.gitignore" />
     </ItemGroup>
 </Project>
