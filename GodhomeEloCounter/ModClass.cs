@@ -67,15 +67,7 @@ namespace GodhomeEloCounter
             _startTime = DateTime.Now;
             Log($"Started fight against {currentScene}");
 
-            foreach (var layout in layouts)
-            {
-                layout.Destroy();
-            }
-            layouts.Clear();
-
-            LayoutRoot layout_ui = new(true);
-            ModUI.SpawnBossUI(layout_ui, _localData.FindOrCreateBoss(sceneName, tier));
-            layouts.Add(layout_ui);
+            RefreshUI(sceneName, tier);
         }
 
         private void OnBossExit(string sceneName) 
@@ -95,6 +87,8 @@ namespace GodhomeEloCounter
 
             Log("Finished fight against " + currentScene);
 
+            RefreshUI(currentScene, tier);
+
             currentScene = sceneName;
         }
 
@@ -108,14 +102,27 @@ namespace GodhomeEloCounter
             if (name == "GG_Workshop") { currentScene = name; }
 
             if (name == "GG_Atrium" || !name.StartsWith("GG_")) {
-                foreach (var layout in layouts)
-                {
-                    layout.Destroy();
-                }
-                layouts.Clear();
+                ClearUI();
             }
 
             return name;
+        }
+
+        private void RefreshUI(string sceneName, int tier)
+        {
+            ClearUI();
+            LayoutRoot layout_ui = new(true);
+            ModUI.SpawnBossUI(layout_ui, _localData.FindOrCreateBoss(sceneName, tier));
+            layouts.Add(layout_ui);
+        }
+
+        private void ClearUI()
+        {
+            foreach (var layout in layouts)
+            {
+                layout.Destroy();
+            }
+            layouts.Clear();
         }
     }
 }
