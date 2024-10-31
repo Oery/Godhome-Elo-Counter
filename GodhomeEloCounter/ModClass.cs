@@ -5,13 +5,17 @@ using UnityEngine;
 
 namespace GodhomeEloCounter
 {
-    public class GodhomeEloCounter : Mod
+    public class GodhomeEloCounter : Mod, ILocalSettings<LocalData>
     {
         internal static GodhomeEloCounter Instance;
 
         public GodhomeEloCounter() : base("Godhome Elo Counter") {}
 
         public override string GetVersion() => "v0.1";
+
+        private LocalData _localData = new LocalData();
+        public void OnLoadLocal(LocalData data) => _localData = data;
+        public LocalData OnSaveLocal() => _localData;
 
         private bool isPlayerFighting;
         private bool isPlayerDead;
@@ -40,6 +44,7 @@ namespace GodhomeEloCounter
 
         private void OnBossEnter(string sceneName)
         {
+            Log($"Entered Boss = {sceneName}");
             isPlayerFighting = true;
             isPlayerDead = false;
 
@@ -50,8 +55,10 @@ namespace GodhomeEloCounter
 
         private void OnBossExit(string sceneName) 
         {
-            if (isPlayerDead) { Log("Player Lost"); }
-            else { Log("Player Won"); }
+            bool has_won;
+
+            if (isPlayerDead) { has_won = false; }
+            else { has_won = true; }
 
             isPlayerFighting = false;
             isPlayerDead = false;
@@ -59,8 +66,11 @@ namespace GodhomeEloCounter
             _endTime = DateTime.Now;
 
             TimeSpan timeSpan = _endTime - _startTime;
+            _localData.UpdateBoss(currentScene, has_won, timeSpan);
 
             currentScene = sceneName;
+
+            Log("Finished fight against " + currentScene);
         }
 
         private string OnSceneLoad(string name)
@@ -68,10 +78,11 @@ namespace GodhomeEloCounter
             Log($"Loading new scene = {name}");
 
             if (name == "GG_Workshop" && isPlayerFighting) { OnBossExit(name); }
-            if (currentScene == "GG_Workshop") { OnBossEnter(name); }
+            if (currentScene == "GG_Workshop" && name != currentScene) { OnBossEnter(name); }
+
+            if (name == "GG_Workshop") { currentScene = name; }
 
             return name;
         }
-
     }
 }
