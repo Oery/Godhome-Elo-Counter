@@ -1,9 +1,6 @@
-﻿using Modding;
-using System;
-using System.Collections;
+using Modding;
 using System.Collections.Generic;
 using UnityEngine;
-using UObject = UnityEngine.Object;
 
 namespace GodhomeEloCounter
 {
