@@ -1,4 +1,5 @@
-﻿using Modding;
+﻿using MagicUI.Core;
+using Modding;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,6 +34,10 @@ namespace GodhomeEloCounter
             ModHooks.TakeHealthHook += OnDamageTaken;
         }
 
+        public bool ToggleButtonInsideMenu => true;
+
+        private List<LayoutRoot> layouts = [];
+
         private int OnDamageTaken(int damage)
         {
             if (damage > PlayerData.instance.health)
@@ -52,6 +57,16 @@ namespace GodhomeEloCounter
             currentScene = sceneName;
             _startTime = DateTime.Now;
             Log($"Started fight against {currentScene}");
+
+            foreach (var layout in layouts)
+            {
+                layout.Destroy();
+            }
+            layouts.Clear();
+
+            LayoutRoot layout_ui = new(true);
+            ModUI.SpawnBossUI(layout_ui, _localData.FindOrCreateBoss(sceneName));
+            layouts.Add(layout_ui);
         }
 
         private void OnBossExit(string sceneName) 
