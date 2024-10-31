@@ -1,4 +1,4 @@
-using Modding;
+﻿using Modding;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,8 +14,7 @@ namespace GodhomeEloCounter
 
         private bool isPlayerFighting;
         private bool isPlayerDead;
-        private string currentBoss;
-        private List<string> peacefulScenes = new List<string> { "GG_Atrium", "GG_Workshop", "GG_Blue_Room" };
+        private string currentScene;
 
         public override void Initialize(Dictionary<string, Dictionary<string, GameObject>> preloadedObjects)
         {
@@ -39,11 +38,12 @@ namespace GodhomeEloCounter
         {
             isPlayerFighting = true;
             isPlayerDead = false;
-            currentBoss = sceneName;
-            Log($"Started fight against {currentBoss}");
+
+            currentScene = sceneName;
+            Log($"Started fight against {currentScene}");
         }
 
-        private void OnBossExit() 
+        private void OnBossExit(string sceneName) 
         {
             if (isPlayerDead) { Log("Player Lost"); }
             else { Log("Player Won"); }
@@ -51,20 +51,15 @@ namespace GodhomeEloCounter
             isPlayerFighting = false;
             isPlayerDead = false;
 
-            currentBoss = null;
+            currentScene = sceneName;
         }
 
         private string OnSceneLoad(string name)
         {
             Log($"Loading new scene = {name}");
 
-            if (!name.StartsWith("GG_") || peacefulScenes.Contains(name))
-            {
-                if (isPlayerFighting) { OnBossExit(); }
-                return name;
-            }
-
-            OnBossEnter(name);
+            if (name == "GG_Workshop" && isPlayerFighting) { OnBossExit(name); }
+            if (currentScene == "GG_Workshop") { OnBossEnter(name); }
 
             return name;
         }
