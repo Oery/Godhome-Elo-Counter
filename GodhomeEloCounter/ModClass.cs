@@ -1,4 +1,4 @@
-using Modding;
+﻿using Modding;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,26 +15,57 @@ namespace GodhomeEloCounter
 
         public override string GetVersion() => "v0.1";
 
-        //public override List<ValueTuple<string, string>> GetPreloadNames()
-        //{
-        //    return new List<ValueTuple<string, string>>
-        //    {
-        //        new ValueTuple<string, string>("White_Palace_18", "White Palace Fly")
-        //    };
-        //}
-
-        //public GodhomeEloCounter() : base("GodhomeEloCounter")
-        //{
-        //    Instance = this;
-        //}
+        private bool isPlayerFighting;
+        private bool isPlayerDead;
+        private List<string> peacefulScenes = new List<string> { "GG_Atrium", "GG_Workshop", "GG_Blue_Room" };
 
         public override void Initialize(Dictionary<string, Dictionary<string, GameObject>> preloadedObjects)
         {
-            Log("Initializing");
-
             Instance = this;
 
-            Log("Initialized");
+            ModHooks.BeforeSceneLoadHook += OnSceneLoad;
+            ModHooks.TakeHealthHook += OnDamageTaken;
         }
+
+        private int OnDamageTaken(int damage)
+        {
+            if (damage > PlayerData.instance.health)
+            {
+                isPlayerDead = true;
+            }
+
+            return damage;
+        }
+
+        private void OnBossEnter()
+        {
+            isPlayerFighting = true;
+            isPlayerDead = false;
+        }
+
+        private void OnBossExit() 
+        {
+            if (isPlayerDead) { Log("Player Lost"); }
+            else { Log("Player Won"); }
+
+            isPlayerFighting = false;
+            isPlayerDead = false;
+        }
+
+        private string OnSceneLoad(string name)
+        {
+            Log($"Loading new scene = {name}");
+
+            if (!name.StartsWith("GG_") || peacefulScenes.Contains(name))
+            {
+                if (isPlayerFighting) { OnBossExit(); }
+                return name;
+            }
+
+            OnBossEnter();
+
+            return name;
+        }
+
     }
 }
