@@ -25,29 +25,27 @@ namespace GodhomeEloCounter
             };
         }
 
-        public static void SpawnAllTierBossUI(LayoutRoot layout, LocalData data, string name) {
+        public static void SpawnAllTierBossUI(LayoutRoot layout, LocalData data, string statueName) {
+            string sceneName = BossMappings.GetSceneFromStatue(statueName);
+            
             string textUI = "";
+            textUI += $"{BossMappings.GetDisplayFromScene(sceneName)}\n\n";
 
-            textUI += $"{BossMappings.GetDisplayFromStatue(name)}\n\n";
-
-            string attunedSceneName = BossMappings.GetSceneFromStatue(name);
-            Boss attuned = data.FindOrCreateBoss(attunedSceneName, 0);
+            Boss attuned = data.FindOrCreateBoss(sceneName, 0);
             textUI += "Attuned\n";
             textUI +=  $"Elo: {attuned.RoundedElo()} ({attuned.RoundedElo() - attuned.RoundedLastElo()})\n";
             textUI +=  $"Streak: {attuned.streak} / Best: {attuned.bestWinStreak}\n";
             textUI +=  $"Wins: {attuned.wins} / Losses: {attuned.losses}\n";
             textUI +=  $"Time: {attuned.timeSpent:hh\\:mm\\:ss}\n\n";
 
-            string ascendedSceneName = BossMappings.GetSceneFromStatue(name);
-            Boss ascended = data.FindOrCreateBoss(ascendedSceneName, 1);
+            Boss ascended = data.FindOrCreateBoss(sceneName, 1);
             textUI += "Ascended\n";
             textUI +=  $"Elo: {ascended.RoundedElo()} ({ascended.RoundedElo() - ascended.RoundedLastElo()})\n";
             textUI +=  $"Streak: {ascended.streak} / Best: {ascended.bestWinStreak}\n";
             textUI +=  $"Wins: {ascended.wins} / Losses: {ascended.losses}\n";
             textUI +=  $"Time: {ascended.timeSpent:hh\\:mm\\:ss}\n\n";
 
-            string radiantSceneName = BossMappings.GetSceneFromStatue(name);
-            Boss radiant = data.FindOrCreateBoss(radiantSceneName, 2);
+            Boss radiant = data.FindOrCreateBoss(sceneName, 2);
             textUI += "Radiant\n";
             textUI +=  $"Elo: {radiant.RoundedElo()} ({radiant.RoundedElo() - radiant.RoundedLastElo()})\n";
             textUI +=  $"Streak: {radiant.streak} / Best: {radiant.bestWinStreak}\n";
