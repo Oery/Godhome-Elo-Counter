@@ -1,4 +1,4 @@
-using MagicUI.Core;
+﻿using MagicUI.Core;
 using Modding;
 using System;
 using System.Collections.Generic;
@@ -74,8 +74,11 @@ namespace GodhomeEloCounter
             isPlayerDead = false;
 
             currentScene = sceneName;
+
+            if (currentScene.EndsWith("_V")) { currentScene = currentScene.Substring(0, currentScene.Length - 2); }
+
             _startTime = DateTime.Now;
-            RefreshUI(sceneName, tier);
+            RefreshUI(currentScene, tier);
         }
 
         private void OnBossExit(string sceneName) 
