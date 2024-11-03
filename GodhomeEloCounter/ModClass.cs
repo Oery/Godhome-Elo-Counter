@@ -108,8 +108,9 @@ namespace GodhomeEloCounter
 
             if (name == "GG_Workshop") { currentScene = name; }
 
-            if (name == "GG_Atrium" || !name.StartsWith("GG_")) {
+            if (name.StartsWith("GG_Atrium") || !name.StartsWith("GG_")) {
                 ClearUI();
+                currentScene = name;
             }
 
             return name;
