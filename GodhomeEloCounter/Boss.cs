@@ -11,9 +11,11 @@ namespace GodhomeEloCounter
 
 		public double elo;
         public double lastElo;
+        public double peakElo;
 
         public int RoundedElo() => (int)Math.Round(elo);
         public int RoundedLastElo() => (int)Math.Round(lastElo);
+        public int RoundedPeakElo() => (int)Math.Round(peakElo);
 
 		public int streak;
 		public int bestWinStreak;
@@ -63,6 +65,8 @@ namespace GodhomeEloCounter
 
             double actualScore = hasWon ? 1.0 : 0.0;
             elo += kFactor * (actualScore - expectedScore);
+
+            if (elo > peakElo) { peakElo = elo; }
 		}
 
 		private void UpdateTime(TimeSpan timeSpan) { timeSpent += timeSpan; }

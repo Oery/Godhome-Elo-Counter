@@ -19,7 +19,7 @@ namespace GodhomeEloCounter {
                     return boss;
                 }
             }
-            bosses.Add(new Boss(sceneName, tier) { elo = 1000.0, lastElo = 1000.0, streak = 0, bestWinStreak = 0, wins = 0, losses = 0, timeSpent = TimeSpan.Zero });
+            bosses.Add(new Boss(sceneName, tier) { elo = 1000.0, lastElo = 1000.0, peakElo = 1000.0, streak = 0, bestWinStreak = 0, wins = 0, losses = 0, timeSpent = TimeSpan.Zero });
             return bosses.Last();
         }
     }

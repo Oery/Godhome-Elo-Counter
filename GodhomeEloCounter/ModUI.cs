@@ -8,11 +8,12 @@ namespace GodhomeEloCounter
         public static void SpawnBossUI(LayoutRoot layout, Boss boss) {
             string sceneName = BossMappings.GetDisplayFromScene(boss.sceneName);
             string eloString = $"Elo: {boss.RoundedElo()} ({boss.RoundedElo() - boss.RoundedLastElo()})";
+            string peakEloString = $"Peak: {boss.RoundedPeakElo()}";
             string streakString = $"Streak: {boss.streak} / Best: {boss.bestWinStreak}";
             string winLossString = $"Wins: {boss.wins} / Losses: {boss.losses}";
             string timeString = $"Time: {boss.timeSpent:hh\\:mm\\:ss}";
 
-            string textUI = $"{sceneName}\n{eloString}\n{streakString}\n{winLossString}\n{timeString}";
+            string textUI = $"{sceneName}\n{eloString}\n{peakEloString}\n{streakString}\n{winLossString}\n{timeString}";
 
             new TextObject(layout)
             {
@@ -34,6 +35,7 @@ namespace GodhomeEloCounter
             Boss attuned = data.FindOrCreateBoss(sceneName, 0);
             textUI += "Attuned\n";
             textUI +=  $"Elo: {attuned.RoundedElo()} ({attuned.RoundedElo() - attuned.RoundedLastElo()})\n";
+            textUI +=  $"Peak: {attuned.RoundedPeakElo()}\n";
             textUI +=  $"Streak: {attuned.streak} / Best: {attuned.bestWinStreak}\n";
             textUI +=  $"Wins: {attuned.wins} / Losses: {attuned.losses}\n";
             textUI +=  $"Time: {attuned.timeSpent:hh\\:mm\\:ss}\n\n";
@@ -41,6 +43,7 @@ namespace GodhomeEloCounter
             Boss ascended = data.FindOrCreateBoss(sceneName, 1);
             textUI += "Ascended\n";
             textUI +=  $"Elo: {ascended.RoundedElo()} ({ascended.RoundedElo() - ascended.RoundedLastElo()})\n";
+            textUI +=  $"Peak: {ascended.RoundedPeakElo()}\n";
             textUI +=  $"Streak: {ascended.streak} / Best: {ascended.bestWinStreak}\n";
             textUI +=  $"Wins: {ascended.wins} / Losses: {ascended.losses}\n";
             textUI +=  $"Time: {ascended.timeSpent:hh\\:mm\\:ss}\n\n";
@@ -48,6 +51,7 @@ namespace GodhomeEloCounter
             Boss radiant = data.FindOrCreateBoss(sceneName, 2);
             textUI += "Radiant\n";
             textUI +=  $"Elo: {radiant.RoundedElo()} ({radiant.RoundedElo() - radiant.RoundedLastElo()})\n";
+            textUI +=  $"Peak: {radiant.RoundedPeakElo()}\n";
             textUI +=  $"Streak: {radiant.streak} / Best: {radiant.bestWinStreak}\n";
             textUI +=  $"Wins: {radiant.wins} / Losses: {radiant.losses}\n";
             textUI +=  $"Time: {radiant.timeSpent:hh\\:mm\\:ss}\n\n";
