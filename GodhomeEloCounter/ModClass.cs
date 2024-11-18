@@ -1,4 +1,4 @@
-﻿using MagicUI.Core;
+using MagicUI.Core;
 using Modding;
 using System;
 using System.Collections.Generic;
@@ -36,6 +36,25 @@ namespace GodhomeEloCounter
             ModHooks.TakeHealthHook += OnDamageTaken;
             On.BossChallengeUI.LoadBoss_int += OnBossLevelSelect;
             On.BossChallengeUI.Setup += OnBossLevelMenu;
+            On.BossSummaryBoard.Show += OnBossSummaryBoardShow;
+            On.BossSummaryBoard.Hide += OnBossSummaryBoardHide;
+        }
+
+        private void OnBossSummaryBoardShow(On.BossSummaryBoard.orig_Show orig, BossSummaryBoard self)
+        {
+            ClearUI();
+
+            LayoutRoot layout = new(true);
+            ModUI.SpawnGlobalStatsUI(layout, _localData);
+            layouts.Add(layout);
+
+            orig(self);
+        }
+
+        private void OnBossSummaryBoardHide(On.BossSummaryBoard.orig_Hide orig, BossSummaryBoard self)
+        {
+            ClearUI();
+            orig(self);
         }
 
         private void OnBossLevelMenu(On.BossChallengeUI.orig_Setup orig, BossChallengeUI self, BossStatue bossStatue, string bossNameSheet, string bossNameKey, string descriptionSheet, string descriptionKey)
