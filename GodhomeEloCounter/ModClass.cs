@@ -14,7 +14,7 @@ namespace GodhomeEloCounter
 
         public GodhomeEloCounter() : base("Godhome Elo Counter") {}
 
-        public override string GetVersion() => "1.0";
+        public override string GetVersion() => "1.1";
 
         private LocalData _localData = new();
         public void OnLoadLocal(LocalData data) => _localData = data;
@@ -310,7 +310,7 @@ namespace GodhomeEloCounter
 
             currentScene = sceneName;
 
-            if (currentScene.EndsWith("_V")) { currentScene = currentScene.Substring(0, currentScene.Length - 2); }
+            if (currentScene.EndsWith("_V") && currentScene != "GG_Mantis_Lords_V") { currentScene = currentScene.Substring(0, currentScene.Length - 2); }
             lastBossScene = currentScene;
 
             _startTime = DateTime.Now;
