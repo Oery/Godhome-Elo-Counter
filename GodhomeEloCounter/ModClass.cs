@@ -1,6 +1,7 @@
 using MagicUI.Core;
 using Modding;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Satchel.BetterMenus;
@@ -152,6 +153,13 @@ namespace GodhomeEloCounter
             On.BossChallengeUI.Setup += OnBossLevelMenu;
             On.BossSummaryBoard.Show += OnBossSummaryBoardShow;
             On.BossSummaryBoard.Hide += OnBossSummaryBoardHide;
+            On.QuitToMenu.Start += OnQuitToMenuStart;
+        }
+
+        private IEnumerator OnQuitToMenuStart(On.QuitToMenu.orig_Start orig, QuitToMenu self)
+        {
+            ClearUI();
+            return orig(self);
         }
 
         private void OnBossSummaryBoardShow(On.BossSummaryBoard.orig_Show orig, BossSummaryBoard self)
@@ -275,6 +283,7 @@ namespace GodhomeEloCounter
             On.BossChallengeUI.Setup -= OnBossLevelMenu;
             On.BossSummaryBoard.Show -= OnBossSummaryBoardShow;
             On.BossSummaryBoard.Hide -= OnBossSummaryBoardHide;
+            On.QuitToMenu.Start -= OnQuitToMenuStart;
 
             ClearUI();
         }
