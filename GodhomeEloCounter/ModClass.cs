@@ -12,7 +12,7 @@ namespace GodhomeEloCounter
 
         public GodhomeEloCounter() : base("Godhome Elo Counter") {}
 
-        public override string GetVersion() => "v0.1";
+        public override string GetVersion() => "0.1";
 
         private LocalData _localData = new LocalData();
         public void OnLoadLocal(LocalData data) => _localData = data;
