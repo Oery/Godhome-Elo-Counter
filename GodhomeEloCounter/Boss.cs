@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace GodhomeEloCounter
 {
@@ -74,7 +74,7 @@ namespace GodhomeEloCounter
 		private void UpdateTime(TimeSpan timeSpan) { timeSpent += timeSpan; }
 
         private void UpdateMatchHistory(bool hasWon) {
-            if (matchHistory.Length >= 19) matchHistory = matchHistory.Substring(2);
+            if (matchHistory.Length >= 15) matchHistory = matchHistory.Substring(2);
             if (matchHistory.Length != 0) matchHistory += " ";
             if (hasWon) matchHistory += "W";
             else matchHistory += "L";
