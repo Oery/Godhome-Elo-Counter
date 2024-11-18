@@ -36,9 +36,66 @@ namespace GodhomeEloCounter
         private DateTime _endTime;
 
         private Menu MenuRef;
+        private Menu UIMenuPageRef;
 
         public MenuScreen GetMenuScreen(MenuScreen modListMenu, ModToggleDelegates? modtoggledelegates) 
         {
+            UIMenuPageRef ??= new Menu(
+                name: "UI Customization",
+                elements: [
+                    new HorizontalOption(
+                        name: "Hide Boss Name",
+                        description: "Boss name will not be displayed",
+                        values: ["Yes", "No"],
+                        applySetting: (value) => {
+                            modSettings.hideBossName = value == 0;
+                            RefreshUI(currentScene, tier);
+                        },
+                        loadSetting: () => modSettings.hideBossName ? 0 : 1
+                    ),
+                    new HorizontalOption(
+                        name: "Hide Winstreak",
+                        description: "Winstreak will not be displayed",
+                        values: ["Yes", "No"],
+                        applySetting: (value) => {
+                            modSettings.hideWinstreak = value == 0;
+                            RefreshUI(currentScene, tier);
+                        },
+                        loadSetting: () => modSettings.hideWinstreak ? 0 : 1
+                    ),
+                    new HorizontalOption(
+                        name: "Hide Wins/Losses",
+                        description: "Wins/Losses will not be displayed",
+                        values: ["Yes", "No"],
+                        applySetting: (value) => {
+                            modSettings.hideWinsLosses = value == 0;
+                            RefreshUI(currentScene, tier);
+                        },
+                        loadSetting: () => modSettings.hideWinsLosses ? 0 : 1
+                    ),
+                    new HorizontalOption(
+                        name: "Hide Time Spent",
+                        description: "Time Spent will not be displayed",
+                        values: ["Yes", "No"],
+                        applySetting: (value) => {
+                            modSettings.hideTimeSpent = value == 0;
+                            RefreshUI(currentScene, tier);
+                        },
+                        loadSetting: () => modSettings.hideTimeSpent ? 0 : 1
+                    ),
+                    new HorizontalOption(
+                        name: "Hide Match History",
+                        description: "Match History will not be displayed",
+                        values: ["Yes", "No"],
+                        applySetting: (value) => {
+                            modSettings.hideMatchHistory = value == 0;
+                            RefreshUI(currentScene, tier);
+                        },
+                        loadSetting: () => modSettings.hideMatchHistory ? 0 : 1
+                    ),
+                ]
+            );
+
             MenuRef ??= new Menu(
                         name: "Godhome Elo Counter",
                         elements:
@@ -102,6 +159,11 @@ namespace GodhomeEloCounter
                                     if (modSettings.hideUIinHoG) ClearUI();
                                 },
                                 loadSetting: () => modSettings.hideUIinHoG ? 0 : 1
+                            ),
+                            Blueprints.NavigateToMenu(
+                                name: "UI Customization",
+                                description: "Customize the UI",
+                                getScreen: () => UIMenuPageRef.GetMenuScreen(MenuRef.menuScreen)
                             ),
                             new MenuButton(
                                 name: "Reset ELO",
@@ -297,7 +359,7 @@ namespace GodhomeEloCounter
         {
             ClearUI();
             LayoutRoot layout_ui = new(true);
-            ModUI.SpawnBossUI(layout_ui, _localData.FindOrCreateBoss(sceneName, tier, modSettings.baseELO));
+            ModUI.SpawnBossUI(layout_ui, _localData.FindOrCreateBoss(sceneName, tier, modSettings.baseELO), modSettings);
             layouts.Add(layout_ui);
         }
 

@@ -7,16 +7,16 @@ namespace GodhomeEloCounter
 {
     public static class ModUI
     {
-        public static void SpawnBossUI(LayoutRoot layout, Boss boss) {
+        public static void SpawnBossUI(LayoutRoot layout, Boss boss, ModSettings settings) {
             string textUI = "";
 
-            textUI += $"{BossMappings.GetDisplayFromScene(boss.sceneName)}\n";
+            if (!settings.hideBossName) textUI += $"{BossMappings.GetDisplayFromScene(boss.sceneName)}\n";
             textUI += $"Elo: {boss.RoundedElo()} ({boss.RoundedElo() - boss.RoundedLastElo()})\n";
             textUI += $"Peak: {boss.RoundedPeakElo()}\n";
-            textUI += $"Streak: {boss.streak} / Best: {boss.bestWinStreak}\n";
-            textUI += $"Wins: {boss.wins} / Losses: {boss.losses}\n";
-            textUI += $"Time: {boss.timeSpent:hh\\:mm\\:ss}\n";
-            textUI += $"{boss.matchHistory}\n";
+            if (!settings.hideWinstreak) textUI += $"Streak: {boss.streak} / Best: {boss.bestWinStreak}\n";
+            if (!settings.hideWinsLosses) textUI += $"Wins: {boss.wins} / Losses: {boss.losses}\n";
+            if (!settings.hideTimeSpent) textUI += $"Time: {boss.timeSpent:hh\\:mm\\:ss}\n";
+            if (!settings.hideMatchHistory) textUI += $"{boss.matchHistory}\n";
 
             new TextObject(layout)
             {
