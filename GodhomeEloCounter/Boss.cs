@@ -26,10 +26,10 @@ namespace GodhomeEloCounter
 		public TimeSpan timeSpent;
 
         public void Update(bool hasWon, TimeSpan timeSpan) {
-			this.UpdateTime(timeSpan);
-			this.UpdateWins(hasWon);
-			this.UpdateStreak(hasWon);
-			this.UpdateELO(hasWon);
+			UpdateTime(timeSpan);
+			UpdateWins(hasWon);
+			UpdateStreak(hasWon);
+			UpdateELO(hasWon);
 		}
 
 		private void UpdateWins(bool hasWon)
