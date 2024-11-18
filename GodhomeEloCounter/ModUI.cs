@@ -42,25 +42,25 @@ namespace GodhomeEloCounter
             textUI +=  $"Streak: {attuned.streak} / Best: {attuned.bestWinStreak}\n";
             textUI +=  $"Wins: {attuned.wins} / Losses: {attuned.losses}\n";
             textUI +=  $"Time: {attuned.timeSpent:hh\\:mm\\:ss}\n";
-            if (attuned.matchHistory.Length > 0) textUI += $"{attuned.matchHistory}\n\n";
+            if (attuned.matchHistory.Length > 0) textUI += $"{attuned.matchHistory}\n";
 
             Boss ascended = data.FindOrCreateBoss(sceneName, 1, baseELO);
-            textUI += "Ascended\n";
+            textUI += "\nAscended\n";
             textUI +=  $"Elo: {ascended.RoundedElo()} ({ascended.RoundedElo() - ascended.RoundedLastElo()})\n";
             textUI +=  $"Peak: {ascended.RoundedPeakElo()}\n";
             textUI +=  $"Streak: {ascended.streak} / Best: {ascended.bestWinStreak}\n";
             textUI +=  $"Wins: {ascended.wins} / Losses: {ascended.losses}\n";
-            textUI +=  $"Time: {ascended.timeSpent:hh\\:mm\\:ss}\n\n";
-            if (ascended.matchHistory.Length > 0) textUI += $"{ascended.matchHistory}\n\n";
+            textUI +=  $"Time: {ascended.timeSpent:hh\\:mm\\:ss}\n";
+            if (ascended.matchHistory.Length > 0) textUI += $"{ascended.matchHistory}\n";
 
             Boss radiant = data.FindOrCreateBoss(sceneName, 2, baseELO);
-            textUI += "Radiant\n";
+            textUI += "\nRadiant\n";
             textUI +=  $"Elo: {radiant.RoundedElo()} ({radiant.RoundedElo() - radiant.RoundedLastElo()})\n";
             textUI +=  $"Peak: {radiant.RoundedPeakElo()}\n";
             textUI +=  $"Streak: {radiant.streak} / Best: {radiant.bestWinStreak}\n";
             textUI +=  $"Wins: {radiant.wins} / Losses: {radiant.losses}\n";
             textUI +=  $"Time: {radiant.timeSpent:hh\\:mm\\:ss}\n";
-            if (radiant.matchHistory.Length > 0) textUI += $"{radiant.matchHistory}\n\n";
+            if (radiant.matchHistory.Length > 0) textUI += $"{radiant.matchHistory}\n";
 
             new TextObject(layout)
             {
