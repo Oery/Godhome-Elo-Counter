@@ -1,4 +1,4 @@
-using MagicUI.Core;
+﻿using MagicUI.Core;
 using Modding;
 using System;
 using System.Collections.Generic;
@@ -22,6 +22,7 @@ namespace GodhomeEloCounter
         private bool isPlayerFighting;
         private bool isPlayerDead;
         private string currentScene;
+        private string lastBossScene;
         private readonly List<string> whitelistedScenes = ["GG_Workshop", "GG_Atrium"];
 
         private int tier = 0;
@@ -79,32 +80,66 @@ namespace GodhomeEloCounter
                             new MenuButton(
                                 name: "Reset ELO",
                                 description: "Reset your ELO for all bosses", 
-                                submitAction: (_) => {}
+                                submitAction: (_) => {
+                                    MenuRef.ShowDialog(Blueprints.CreateDialogMenu(
+                                        title: "Reset ELO ?",
+                                        subTitle: "Your ELO will be lost forever",
+                                        Options: ["Yes", "No"],
+                                        OnButtonPress: (selection) =>
+                                        {
+                                            switch (selection)
+                                            {
+                                                case "Yes": 
+                                                    _localData.bosses.ForEach(boss => {
+                                                        boss.elo = 1000.0;
+                                                        boss.lastElo = 1000.0;
+                                                        boss.peakElo = 1000.0;
+                                                    });
+                                                    Utils.GoToMenuScreen(MenuRef.menuScreen);
+                                                    ClearUI();
+                                                    break;
+                                                case "No":
+                                                    Utils.GoToMenuScreen(MenuRef.menuScreen);
+                                                    break;
+                                            }
+                                        }
+                                    ));
+                                }
+                            ),
+                            new MenuButton(
+                                name: "Reset Last Boss ELO",
+                                description: "Reset your ELO for the last boss and difficulty", 
+                                submitAction: (_) => {
+                                    MenuRef.ShowDialog(Blueprints.CreateDialogMenu(
+                                        title: "Reset Last Boss ELO ?",
+                                        subTitle: "Your ELO will be lost forever",
+                                        Options: ["Yes", "No"],
+                                        OnButtonPress: (selection) =>
+                                        {
+                                            switch (selection)
+                                            {
+                                                case "Yes": 
+                                                    Boss boss = _localData.bosses
+                                                        .Find(b => b.tier == tier && b.sceneName == lastBossScene);
+                                                    boss.elo = 1000.0;
+                                                    boss.lastElo = 1000.0;
+                                                    boss.peakElo = 1000.0;
+
+                                                    Utils.GoToMenuScreen(MenuRef.menuScreen);
+                                                    ClearUI();
+                                                    break;
+                                                case "No":
+                                                    Utils.GoToMenuScreen(MenuRef.menuScreen);
+                                                    break;
+                                            }
+                                        }
+                                    ));
+                                }
                             ),
                         ]
             );
 
-            var menuScreen = MenuRef.GetMenuScreen(modListMenu);
-
-            MenuRef.AddConfirmDialog(
-                title: "Reset ELO ?",
-                subTitle: "Your ELO will be lost forever",
-                Options: ["Yes", "No"],
-                OnButtonPress: (selection) => 
-                {
-                    switch (selection)
-                    {
-                        case "Yes": 
-                            //TODO: Reset ELO
-                            Utils.GoToMenuScreen(MenuRef.menuScreen);
-                            break;
-                        case "No":
-                            Utils.GoToMenuScreen(MenuRef.menuScreen);
-                            break;
-                    }
-            });
-
-            return menuScreen;
+            return MenuRef.GetMenuScreen(modListMenu);
         }
 
         public override void Initialize(Dictionary<string, Dictionary<string, GameObject>> preloadedObjects)
@@ -174,6 +209,7 @@ namespace GodhomeEloCounter
             currentScene = sceneName;
 
             if (currentScene.EndsWith("_V")) { currentScene = currentScene.Substring(0, currentScene.Length - 2); }
+            lastBossScene = currentScene;
 
             _startTime = DateTime.Now;
             RefreshUI(currentScene, tier);
@@ -230,5 +266,26 @@ namespace GodhomeEloCounter
             }
             layouts.Clear();
         }
+
+        public void Unload()
+        {
+            ModHooks.BeforeSceneLoadHook -= OnSceneLoad;
+            ModHooks.TakeHealthHook -= OnDamageTaken;
+            On.BossChallengeUI.LoadBoss_int -= OnBossLevelSelect;
+            On.BossChallengeUI.Setup -= OnBossLevelMenu;
+            On.BossSummaryBoard.Show -= OnBossSummaryBoardShow;
+            On.BossSummaryBoard.Hide -= OnBossSummaryBoardHide;
+
+            ClearUI();
+        }
     }
 }
+
+// TODO: Global Toggle
+// TODO: Unload Mod
+// TODO: Show/Hide Keybind
+// TODO: Reset ELO
+// TODO: UI Customization
+// TODO: Recent Games
+// TODO: Destroy UI when quitting
+
