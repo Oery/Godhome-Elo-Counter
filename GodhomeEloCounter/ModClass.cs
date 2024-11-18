@@ -8,7 +8,7 @@ using Satchel.BetterMenus;
 
 namespace GodhomeEloCounter
 {
-    public class GodhomeEloCounter : Mod, ILocalSettings<LocalData>, ICustomMenuMod
+    public class GodhomeEloCounter : Mod, ILocalSettings<LocalData>, ICustomMenuMod, ITogglableMod
     {
         internal static GodhomeEloCounter Instance;
 
@@ -39,6 +39,11 @@ namespace GodhomeEloCounter
                         name: "Godhome Elo Counter",
                         elements:
                         [
+                            Blueprints.CreateToggle(
+                                toggleDelegates: modtoggledelegates.Value,
+                                name: "Elo Counter Enabled",  
+                                description: "Let you disable this mod entirely"
+                            ),
                             new HorizontalOption(
                                 name: "Base ELO",
                                 description: "How much ELO you should start with",
