@@ -23,4 +23,16 @@ namespace GodhomeEloCounter {
             return bosses.Last();
         }
     }
+
+    [Serializable]
+    public class ModSettings {
+        public int baseELO = 1000;
+        public bool hideUIinFights = false;
+        public bool hideUIinHoG = false;
+        public bool hideBossName = false;
+        public bool hideWinsLosses = false;
+        public bool hideWinstreak = false;
+        public bool hideMatchHistory = false;
+        public bool hideTimeSpent = false;
+    }
 }

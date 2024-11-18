@@ -8,7 +8,7 @@ using Satchel.BetterMenus;
 
 namespace GodhomeEloCounter
 {
-    public class GodhomeEloCounter : Mod, ILocalSettings<LocalData>, ICustomMenuMod, ITogglableMod
+    public class GodhomeEloCounter : Mod, ILocalSettings<LocalData>, IGlobalSettings<ModSettings>, ICustomMenuMod, ITogglableMod
     {
         internal static GodhomeEloCounter Instance;
 
@@ -16,9 +16,13 @@ namespace GodhomeEloCounter
 
         public override string GetVersion() => "0.1";
 
-        private LocalData _localData = new LocalData();
+        private LocalData _localData = new();
         public void OnLoadLocal(LocalData data) => _localData = data;
         public LocalData OnSaveLocal() => _localData;
+
+        private ModSettings modSettings = new();
+        public void OnLoadGlobal(ModSettings data) => modSettings = data;
+        public ModSettings OnSaveGlobal() => modSettings;
 
         private bool isPlayerFighting;
         private bool isPlayerDead;
