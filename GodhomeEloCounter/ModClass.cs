@@ -235,7 +235,9 @@ namespace GodhomeEloCounter
             lastBossScene = currentScene;
 
             _startTime = DateTime.Now;
-            if (!modSettings.hideUIinFights) RefreshUI(currentScene, tier);
+
+            if (modSettings.hideUIinFights) ClearUI();
+            else RefreshUI(currentScene, tier);
         }
 
         private void OnBossExit(string sceneName) 
