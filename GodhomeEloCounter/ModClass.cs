@@ -1,4 +1,4 @@
-﻿using MagicUI.Core;
+using MagicUI.Core;
 using Modding;
 using System;
 using System.Collections.Generic;
@@ -280,12 +280,3 @@ namespace GodhomeEloCounter
         }
     }
 }
-
-// TODO: Global Toggle
-// TODO: Unload Mod
-// TODO: Show/Hide Keybind
-// TODO: Reset ELO
-// TODO: UI Customization
-// TODO: Recent Games
-// TODO: Destroy UI when quitting
-
