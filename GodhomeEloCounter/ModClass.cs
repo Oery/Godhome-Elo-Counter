@@ -1,4 +1,4 @@
-using MagicUI.Core;
+﻿using MagicUI.Core;
 using Modding;
 using System;
 using System.Collections;
@@ -14,7 +14,7 @@ namespace GodhomeEloCounter
 
         public GodhomeEloCounter() : base("Godhome Elo Counter") {}
 
-        public override string GetVersion() => "0.1";
+        public override string GetVersion() => "1.0";
 
         private LocalData _localData = new();
         public void OnLoadLocal(LocalData data) => _localData = data;
