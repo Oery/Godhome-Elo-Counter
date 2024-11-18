@@ -1,21 +1,92 @@
+---
+---
+
+---
+
 # Godhome Elo Counter
 
-A Hollow Knight mod that adds an ELO system to Godhome.
+_A Hollow Knight mod that introduces an ELO rating system to Godhome, enhancing your gameplay experience by tracking performance and encouraging improvement._
 
-## Why ELO over simply tracking wins/losses?
+## 📈 Why Use ELO Instead of Just Tracking Wins/Losses?
 
-ELO is way more volatile than a winrate. When tracking winrate, you'll always be slow down by the amount of losses you have. The more you lose, the harder it is to make your winrate go up. You could win 10 games in a row and it could not affect your winrate at all. With ELO, the more you win, the harder it is to gain ELO and the higher ELO you are, the more you will lose on defeat.
+ELO offers a more dynamic and responsive metric compared to winrate. Unlike winrate, which can be heavily influenced by past losses and becomes harder to improve over time, ELO adjusts based on your current performance:
 
-So if you play well, you go up fast. If you play badly, you go down fast.
+- **Rapid Progression:** If you play well, your ELO increases quickly.
+- **High Stakes:** As your ELO rises, gains become harder to achieve, and losses have a greater impact.
 
-## The benefits
+ELO reflects your _current skill level_ and adjusts to your performance, making it a more accurate and rewarding system for tracking improvement.
 
-The key points of using ELO are:
+---
 
-#### Consistency
+## 🎯 Benefits of Using ELO
 
-If you want to get a high ELO, you'll have to be more consistent on your wins. Something that happens when you don't track stats is just not caring. You take a dumb hit and say "Oh, I was not focused, not my fault", but if you train for harder challenges, you don't care about being focused or not. What you care about is winning.
+### 🔁 Consistency
 
-#### Self control
+Striving for a high ELO demands consistent performance. It encourages you to approach each fight with focus and determination, even during training. No more shrugging off mistakes as "just a fluke"—every match matters.
 
-Challenges on this game can put a lot of pressure on you. Fights during training are very different from running challenges. At some point, losses will have a huge impact on your ELO, and if you care about it, you'll be able to play with constant panic and train self-control.
+### 🧠 Self-Control
+
+Challenges in Hollow Knight can be intense. With ELO, every win and loss affects your rating. This adds pressure, pushing you to master self-control and thrive under difficult conditions, skills that are invaluable in real gameplay.
+
+---
+
+## 🌟 Features
+
+- **Detailed Performance Stats:**
+  - ELO, peak ELO, ELO gains/losses
+  - Win/loss records, streaks, time spent
+  - Per-boss and per-difficulty tracking
+  - History of the last 8 rounds
+- **Customizable Overlays:**
+  - Toggle stats visibility during fights or in the Hall of Gods (HoG)
+  - Tailor the display to your preferences
+- **Global Leaderboard:**
+  - View cumulative stats on the HoG Board.
+- **Comprehensive Configuration Options:**
+  - Set a starting ELO (up to 1600, equivalent to ~50% winrate).
+  - Reset ELO for specific bosses or all bosses without affecting other stats.
+  - Customize the UI for a streamlined experience.
+
+---
+
+## ⚙️ Configuration
+
+Access the mod's settings via the in-game mod menu. Here's what you can adjust:
+
+- **Base ELO:** Set your starting ELO. The maximum is 1600 (approximately a 50% winrate).
+- **UI Customization:** Enable or disable specific stats in the overlay to match your preferences.
+- **Hide UI:**
+  - During fights for a distraction-free experience.
+  - In the HoG for a cleaner look.
+- **ELO Resets:** Reset ELO for all bosses or only the current one.
+
+---
+
+## 🖼️ Screenshots
+
+### 📌 Boss Statue
+
+![Boss Statue](./screenshots/boss-statue.png)
+
+---
+
+### 📌 Hall of Gods Board
+
+![HoG Board](./screenshots/hog-board.png)
+
+---
+
+### 📌 In-Fight Overlay
+
+![In Fight](./screenshots/in-fight.png)
+
+---
+
+## 🛠️ Dependencies
+
+To use this mod, you'll need the following dependencies installed:
+
+- [MagicUI](https://github.com/BadMagic100/MagicUI): A UI toolkit for Hollow Knight mods.
+- [Satchel](https://github.com/PrashantMohta/Satchel): A library for mod configuration and data management.
+
+---
