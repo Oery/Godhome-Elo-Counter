@@ -3,10 +3,11 @@ using Modding;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Satchel.BetterMenus;
 
 namespace GodhomeEloCounter
 {
-    public class GodhomeEloCounter : Mod, ILocalSettings<LocalData>
+    public class GodhomeEloCounter : Mod, ILocalSettings<LocalData>, ICustomMenuMod
     {
         internal static GodhomeEloCounter Instance;
 
@@ -27,6 +28,84 @@ namespace GodhomeEloCounter
 
         private DateTime _startTime;
         private DateTime _endTime;
+
+        private Menu MenuRef;
+
+        public MenuScreen GetMenuScreen(MenuScreen modListMenu, ModToggleDelegates? modtoggledelegates) 
+        {
+            MenuRef ??= new Menu(
+                        name: "Godhome Elo Counter",
+                        elements:
+                        [
+                            new HorizontalOption(
+                                name: "Base ELO",
+                                description: "How much ELO you should start with",
+                                values: ["800", "900", "1000", "1100", "1200", "1300", "1400", "1500", "1600"],
+                                applySetting: index =>
+                                {
+                                    // GlobalSettings.health = index switch
+                                    // {
+                                    //     0 => 800,
+                                    //     1 => 900,
+                                    //     2 => 1000,
+                                    //     3 => 1100,
+                                    //     4 => 1200,
+                                    //     5 => 1300,
+                                    //     6 => 1400,
+                                    //     7 => 1500,
+                                    //     8 => 1600,
+                                    //     _ => 1000
+                                    // };
+                                    // return 1000;
+                                },
+                                loadSetting: () => 
+                                {
+                                    // GlobalSettings.health switch
+                                    // {
+                                    //     800 => 0,
+                                    //     900 => 1,
+                                    //     1000 => 2,
+                                    //     1100 => 3,
+                                    //     1200 => 4,
+                                    //     1300 => 5,
+                                    //     1400 => 6,
+                                    //     1500 => 7,
+                                    //     1600 => 8,
+                                    //     _ => 2
+                                    // }
+                                    return 2;
+                                }
+                            ),
+                            new MenuButton(
+                                name: "Reset ELO",
+                                description: "Reset your ELO for all bosses", 
+                                submitAction: (_) => {}
+                            ),
+                        ]
+            );
+
+            var menuScreen = MenuRef.GetMenuScreen(modListMenu);
+
+            MenuRef.AddConfirmDialog(
+                title: "Reset ELO ?",
+                subTitle: "Your ELO will be lost forever",
+                Options: ["Yes", "No"],
+                OnButtonPress: (selection) => 
+                {
+                    switch (selection)
+                    {
+                        case "Yes": 
+                            //TODO: Reset ELO
+                            Utils.GoToMenuScreen(MenuRef.menuScreen);
+                            break;
+                        case "No":
+                            Utils.GoToMenuScreen(MenuRef.menuScreen);
+                            break;
+                    }
+            });
+
+            return menuScreen;
+        }
 
         public override void Initialize(Dictionary<string, Dictionary<string, GameObject>> preloadedObjects)
         {
