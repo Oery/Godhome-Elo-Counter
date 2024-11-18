@@ -93,6 +93,16 @@ namespace GodhomeEloCounter
                                 },
                                 loadSetting: () => modSettings.hideUIinFights ? 0 : 1
                             ),
+                            new HorizontalOption(
+                                name: "Hide UI in Hall of Gods",
+                                description: "Stats are hidden outside of fights",
+                                values: ["Yes", "No"],
+                                applySetting: (value) => {
+                                    modSettings.hideUIinHoG = value == 0;
+                                    if (modSettings.hideUIinHoG) ClearUI();
+                                },
+                                loadSetting: () => modSettings.hideUIinHoG ? 0 : 1
+                            ),
                             new MenuButton(
                                 name: "Reset ELO",
                                 description: "Reset your ELO for all bosses", 
@@ -181,9 +191,12 @@ namespace GodhomeEloCounter
         {
             ClearUI();
 
-            LayoutRoot layout = new(true);
-            ModUI.SpawnGlobalStatsUI(layout, _localData);
-            layouts.Add(layout);
+            if (!modSettings.hideUIinHoG)
+            {
+                LayoutRoot layout = new(true);
+                ModUI.SpawnGlobalStatsUI(layout, _localData);
+                layouts.Add(layout);
+            }
 
             orig(self);
         }
@@ -197,9 +210,13 @@ namespace GodhomeEloCounter
         private void OnBossLevelMenu(On.BossChallengeUI.orig_Setup orig, BossChallengeUI self, BossStatue bossStatue, string bossNameSheet, string bossNameKey, string descriptionSheet, string descriptionKey)
         {
             ClearUI();
-            LayoutRoot layout = new(true);
-            ModUI.SpawnAllTierBossUI(layout, _localData, bossNameKey, modSettings.baseELO);
-            layouts.Add(layout);
+
+            if (!modSettings.hideUIinHoG)
+            {
+                LayoutRoot layout = new(true);
+                ModUI.SpawnAllTierBossUI(layout, _localData, bossNameKey, modSettings.baseELO);
+                layouts.Add(layout);
+            }
 
             orig(self, bossStatue, bossNameSheet, bossNameKey, descriptionSheet, descriptionKey);
         }
@@ -255,7 +272,8 @@ namespace GodhomeEloCounter
             TimeSpan timeSpan = _endTime - _startTime;
             _localData.UpdateBoss(currentScene, tier, has_won, timeSpan, modSettings.baseELO);
 
-            RefreshUI(currentScene, tier);
+            if (!modSettings.hideUIinHoG) RefreshUI(currentScene, tier);
+            else ClearUI();
 
             currentScene = sceneName;
         }
