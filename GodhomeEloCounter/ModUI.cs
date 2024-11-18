@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using MagicUI.Core;
 using MagicUI.Elements;
@@ -8,14 +8,15 @@ namespace GodhomeEloCounter
     public static class ModUI
     {
         public static void SpawnBossUI(LayoutRoot layout, Boss boss) {
-            string sceneName = BossMappings.GetDisplayFromScene(boss.sceneName);
-            string eloString = $"Elo: {boss.RoundedElo()} ({boss.RoundedElo() - boss.RoundedLastElo()})";
-            string peakEloString = $"Peak: {boss.RoundedPeakElo()}";
-            string streakString = $"Streak: {boss.streak} / Best: {boss.bestWinStreak}";
-            string winLossString = $"Wins: {boss.wins} / Losses: {boss.losses}";
-            string timeString = $"Time: {boss.timeSpent:hh\\:mm\\:ss}";
+            string textUI = "";
 
-            string textUI = $"{sceneName}\n{eloString}\n{peakEloString}\n{streakString}\n{winLossString}\n{timeString}";
+            textUI += $"{BossMappings.GetDisplayFromScene(boss.sceneName)}\n";
+            textUI += $"Elo: {boss.RoundedElo()} ({boss.RoundedElo() - boss.RoundedLastElo()})\n";
+            textUI += $"Peak: {boss.RoundedPeakElo()}\n";
+            textUI += $"Streak: {boss.streak} / Best: {boss.bestWinStreak}\n";
+            textUI += $"Wins: {boss.wins} / Losses: {boss.losses}\n";
+            textUI += $"Time: {boss.timeSpent:hh\\:mm\\:ss}\n";
+            
 
             new TextObject(layout)
             {
