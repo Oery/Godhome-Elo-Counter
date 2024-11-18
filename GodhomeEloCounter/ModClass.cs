@@ -81,7 +81,17 @@ namespace GodhomeEloCounter
                                     1600 => 8,
                                     _ => 2
                                 }
-                                
+                            ),
+                            new HorizontalOption(
+                                name: "Hide UI in combat",
+                                description: "Stats are hidden when fighting bosses",
+                                values: ["Yes", "No"],
+                                applySetting: (value) => {
+                                    modSettings.hideUIinFights = value == 0;
+                                    if (modSettings.hideUIinFights) ClearUI();
+                                    else RefreshUI(currentScene, tier);
+                                },
+                                loadSetting: () => modSettings.hideUIinFights ? 0 : 1
                             ),
                             new MenuButton(
                                 name: "Reset ELO",
@@ -225,7 +235,7 @@ namespace GodhomeEloCounter
             lastBossScene = currentScene;
 
             _startTime = DateTime.Now;
-            RefreshUI(currentScene, tier);
+            if (!modSettings.hideUIinFights) RefreshUI(currentScene, tier);
         }
 
         private void OnBossExit(string sceneName) 
