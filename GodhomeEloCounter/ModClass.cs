@@ -54,38 +54,34 @@ namespace GodhomeEloCounter
                                 values: ["800", "900", "1000", "1100", "1200", "1300", "1400", "1500", "1600"],
                                 applySetting: index =>
                                 {
-                                    // GlobalSettings.health = index switch
-                                    // {
-                                    //     0 => 800,
-                                    //     1 => 900,
-                                    //     2 => 1000,
-                                    //     3 => 1100,
-                                    //     4 => 1200,
-                                    //     5 => 1300,
-                                    //     6 => 1400,
-                                    //     7 => 1500,
-                                    //     8 => 1600,
-                                    //     _ => 1000
-                                    // };
-                                    // return 1000;
+                                    modSettings.baseELO = index switch
+                                    {
+                                        0 => 800,
+                                        1 => 900,
+                                        2 => 1000,
+                                        3 => 1100,
+                                        4 => 1200,
+                                        5 => 1300,
+                                        6 => 1400,
+                                        7 => 1500,
+                                        8 => 1600,
+                                        _ => 1000
+                                    };
                                 },
-                                loadSetting: () => 
+                                loadSetting: () => modSettings.baseELO switch
                                 {
-                                    // GlobalSettings.health switch
-                                    // {
-                                    //     800 => 0,
-                                    //     900 => 1,
-                                    //     1000 => 2,
-                                    //     1100 => 3,
-                                    //     1200 => 4,
-                                    //     1300 => 5,
-                                    //     1400 => 6,
-                                    //     1500 => 7,
-                                    //     1600 => 8,
-                                    //     _ => 2
-                                    // }
-                                    return 2;
+                                    800 => 0,
+                                    900 => 1,
+                                    1000 => 2,
+                                    1100 => 3,
+                                    1200 => 4,
+                                    1300 => 5,
+                                    1400 => 6,
+                                    1500 => 7,
+                                    1600 => 8,
+                                    _ => 2
                                 }
+                                
                             ),
                             new MenuButton(
                                 name: "Reset ELO",
@@ -101,9 +97,9 @@ namespace GodhomeEloCounter
                                             {
                                                 case "Yes": 
                                                     _localData.bosses.ForEach(boss => {
-                                                        boss.elo = 1000.0;
-                                                        boss.lastElo = 1000.0;
-                                                        boss.peakElo = 1000.0;
+                                                        boss.elo = modSettings.baseELO;
+                                                        boss.lastElo = modSettings.baseELO;
+                                                        boss.peakElo = modSettings.baseELO;
                                                     });
                                                     Utils.GoToMenuScreen(MenuRef.menuScreen);
                                                     ClearUI();
@@ -131,9 +127,9 @@ namespace GodhomeEloCounter
                                                 case "Yes": 
                                                     Boss boss = _localData.bosses
                                                         .Find(b => b.tier == tier && b.sceneName == lastBossScene);
-                                                    boss.elo = 1000.0;
-                                                    boss.lastElo = 1000.0;
-                                                    boss.peakElo = 1000.0;
+                                                    boss.elo = modSettings.baseELO;
+                                                    boss.lastElo = modSettings.baseELO;
+                                                    boss.peakElo = modSettings.baseELO;
 
                                                     Utils.GoToMenuScreen(MenuRef.menuScreen);
                                                     ClearUI();
@@ -192,7 +188,7 @@ namespace GodhomeEloCounter
         {
             ClearUI();
             LayoutRoot layout = new(true);
-            ModUI.SpawnAllTierBossUI(layout, _localData, bossNameKey);
+            ModUI.SpawnAllTierBossUI(layout, _localData, bossNameKey, modSettings.baseELO);
             layouts.Add(layout);
 
             orig(self, bossStatue, bossNameSheet, bossNameKey, descriptionSheet, descriptionKey);
@@ -245,7 +241,7 @@ namespace GodhomeEloCounter
             _endTime = DateTime.Now;
 
             TimeSpan timeSpan = _endTime - _startTime;
-            _localData.UpdateBoss(currentScene, tier, has_won, timeSpan);
+            _localData.UpdateBoss(currentScene, tier, has_won, timeSpan, modSettings.baseELO);
 
             RefreshUI(currentScene, tier);
 
@@ -271,7 +267,7 @@ namespace GodhomeEloCounter
         {
             ClearUI();
             LayoutRoot layout_ui = new(true);
-            ModUI.SpawnBossUI(layout_ui, _localData.FindOrCreateBoss(sceneName, tier));
+            ModUI.SpawnBossUI(layout_ui, _localData.FindOrCreateBoss(sceneName, tier, modSettings.baseELO));
             layouts.Add(layout_ui);
         }
 

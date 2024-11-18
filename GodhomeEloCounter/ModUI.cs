@@ -28,13 +28,13 @@ namespace GodhomeEloCounter
             };
         }
 
-        public static void SpawnAllTierBossUI(LayoutRoot layout, LocalData data, string statueName) {
+        public static void SpawnAllTierBossUI(LayoutRoot layout, LocalData data, string statueName, double baseELO) {
             string sceneName = BossMappings.GetSceneFromStatue(statueName);
             
             string textUI = "";
             textUI += $"{BossMappings.GetDisplayFromScene(sceneName)}\n\n";
 
-            Boss attuned = data.FindOrCreateBoss(sceneName, 0);
+            Boss attuned = data.FindOrCreateBoss(sceneName, 0, baseELO);
             textUI += "Attuned\n";
             textUI +=  $"Elo: {attuned.RoundedElo()} ({attuned.RoundedElo() - attuned.RoundedLastElo()})\n";
             textUI +=  $"Peak: {attuned.RoundedPeakElo()}\n";
@@ -42,7 +42,7 @@ namespace GodhomeEloCounter
             textUI +=  $"Wins: {attuned.wins} / Losses: {attuned.losses}\n";
             textUI +=  $"Time: {attuned.timeSpent:hh\\:mm\\:ss}\n\n";
 
-            Boss ascended = data.FindOrCreateBoss(sceneName, 1);
+            Boss ascended = data.FindOrCreateBoss(sceneName, 1, baseELO);
             textUI += "Ascended\n";
             textUI +=  $"Elo: {ascended.RoundedElo()} ({ascended.RoundedElo() - ascended.RoundedLastElo()})\n";
             textUI +=  $"Peak: {ascended.RoundedPeakElo()}\n";
@@ -50,7 +50,7 @@ namespace GodhomeEloCounter
             textUI +=  $"Wins: {ascended.wins} / Losses: {ascended.losses}\n";
             textUI +=  $"Time: {ascended.timeSpent:hh\\:mm\\:ss}\n\n";
 
-            Boss radiant = data.FindOrCreateBoss(sceneName, 2);
+            Boss radiant = data.FindOrCreateBoss(sceneName, 2, baseELO);
             textUI += "Radiant\n";
             textUI +=  $"Elo: {radiant.RoundedElo()} ({radiant.RoundedElo() - radiant.RoundedLastElo()})\n";
             textUI +=  $"Peak: {radiant.RoundedPeakElo()}\n";
