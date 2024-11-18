@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using MagicUI.Core;
 using MagicUI.Elements;
@@ -16,7 +16,7 @@ namespace GodhomeEloCounter
             textUI += $"Streak: {boss.streak} / Best: {boss.bestWinStreak}\n";
             textUI += $"Wins: {boss.wins} / Losses: {boss.losses}\n";
             textUI += $"Time: {boss.timeSpent:hh\\:mm\\:ss}\n";
-            
+            textUI += $"{boss.matchHistory}\n";
 
             new TextObject(layout)
             {
@@ -42,6 +42,7 @@ namespace GodhomeEloCounter
             textUI +=  $"Streak: {attuned.streak} / Best: {attuned.bestWinStreak}\n";
             textUI +=  $"Wins: {attuned.wins} / Losses: {attuned.losses}\n";
             textUI +=  $"Time: {attuned.timeSpent:hh\\:mm\\:ss}\n\n";
+            textUI += $"{attuned.matchHistory}\n";
 
             Boss ascended = data.FindOrCreateBoss(sceneName, 1, baseELO);
             textUI += "Ascended\n";
@@ -50,6 +51,7 @@ namespace GodhomeEloCounter
             textUI +=  $"Streak: {ascended.streak} / Best: {ascended.bestWinStreak}\n";
             textUI +=  $"Wins: {ascended.wins} / Losses: {ascended.losses}\n";
             textUI +=  $"Time: {ascended.timeSpent:hh\\:mm\\:ss}\n\n";
+            textUI += $"{ascended.matchHistory}\n";
 
             Boss radiant = data.FindOrCreateBoss(sceneName, 2, baseELO);
             textUI += "Radiant\n";
@@ -58,6 +60,7 @@ namespace GodhomeEloCounter
             textUI +=  $"Streak: {radiant.streak} / Best: {radiant.bestWinStreak}\n";
             textUI +=  $"Wins: {radiant.wins} / Losses: {radiant.losses}\n";
             textUI +=  $"Time: {radiant.timeSpent:hh\\:mm\\:ss}\n\n";
+            textUI += $"{radiant.matchHistory}\n";
 
             new TextObject(layout)
             {
