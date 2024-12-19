@@ -7,7 +7,12 @@ namespace GodhomeEloCounter
 {
     public static class ModUI
     {
-        public static void SpawnBossUI(LayoutRoot layout, Boss boss, ModSettings settings) {
+        public static void SpawnBossUI(string sceneName, int tier) {
+            GodhomeEloCounter.Instance.ClearUI();
+
+            LocalData data = GodhomeEloCounter.Instance._localData;
+            ModSettings settings = GodhomeEloCounter.Instance.modSettings;
+            Boss boss = data.FindOrCreateBoss(sceneName, tier);
             string textUI = "";
 
             if (!settings.hideBossName) textUI += $"{BossMappings.GetDisplayFromScene(boss.sceneName)}\n";
@@ -18,6 +23,8 @@ namespace GodhomeEloCounter
             if (!settings.hideTimeSpent) textUI += $"Time: {FormatTimeSpan(boss.timeSpent)}\n";
             if (!settings.hideMatchHistory) textUI += $"{boss.matchHistory}\n";
 
+            LayoutRoot layout = new(true);
+
             new TextObject(layout)
             {
                 HorizontalAlignment = HorizontalAlignment.Right,
@@ -27,9 +34,14 @@ namespace GodhomeEloCounter
                 Text = textUI,
                 Padding = new(20)
             };
+
+            GodhomeEloCounter.Instance.layouts.Add(layout);
         }
 
-        public static void SpawnAllTierBossUI(LayoutRoot layout, LocalData data, string statueName, double baseELO) {
+        public static void SpawnAllTierBossUI(string statueName) {
+            GodhomeEloCounter.Instance.ClearUI();
+
+            LocalData data = GodhomeEloCounter.Instance._localData;
             string sceneName = BossMappings.GetSceneFromStatue(statueName);
 
             // If the scene name is null, it means that the statue doesn't have an arena scene linked, which means we cannot track data. Absent mappings will cause the game to open a bugged UI.
@@ -38,7 +50,7 @@ namespace GodhomeEloCounter
             string textUI = "";
             textUI += $"{BossMappings.GetDisplayFromScene(sceneName)}\n\n";
 
-            Boss attuned = data.FindOrCreateBoss(sceneName, 0, baseELO);
+            Boss attuned = data.FindOrCreateBoss(sceneName, 0);
             textUI += "Attuned\n";
             textUI +=  $"Elo: {attuned.RoundedElo()} ({attuned.RoundedElo() - attuned.RoundedLastElo()})\n";
             textUI +=  $"Peak: {attuned.RoundedPeakElo()}\n";
@@ -47,7 +59,7 @@ namespace GodhomeEloCounter
             textUI += $"Time: {FormatTimeSpan(attuned.timeSpent)}\n";
             if (attuned.matchHistory.Length > 0) textUI += $"{attuned.matchHistory}\n";
 
-            Boss ascended = data.FindOrCreateBoss(sceneName, 1, baseELO);
+            Boss ascended = data.FindOrCreateBoss(sceneName, 1);
             textUI += "\nAscended\n";
             textUI +=  $"Elo: {ascended.RoundedElo()} ({ascended.RoundedElo() - ascended.RoundedLastElo()})\n";
             textUI +=  $"Peak: {ascended.RoundedPeakElo()}\n";
@@ -56,7 +68,7 @@ namespace GodhomeEloCounter
             textUI += $"Time: {FormatTimeSpan(ascended.timeSpent)}\n";
             if (ascended.matchHistory.Length > 0) textUI += $"{ascended.matchHistory}\n";
 
-            Boss radiant = data.FindOrCreateBoss(sceneName, 2, baseELO);
+            Boss radiant = data.FindOrCreateBoss(sceneName, 2);
             textUI += "\nRadiant\n";
             textUI +=  $"Elo: {radiant.RoundedElo()} ({radiant.RoundedElo() - radiant.RoundedLastElo()})\n";
             textUI +=  $"Peak: {radiant.RoundedPeakElo()}\n";
@@ -64,6 +76,8 @@ namespace GodhomeEloCounter
             textUI +=  $"Wins: {radiant.wins} / Losses: {radiant.losses}\n";
             textUI += $"Time: {FormatTimeSpan(radiant.timeSpent)}\n";
             if (radiant.matchHistory.Length > 0) textUI += $"{radiant.matchHistory}\n";
+
+            LayoutRoot layout = new(true);
 
             new TextObject(layout)
             {
@@ -74,9 +88,14 @@ namespace GodhomeEloCounter
                 Text = textUI,
                 Padding = new(20)
             };
+
+            GodhomeEloCounter.Instance.layouts.Add(layout);
         }
 
-        public static void SpawnGlobalStatsUI(LayoutRoot layout, LocalData data) {
+        public static void SpawnGlobalStatsUI() {
+            GodhomeEloCounter.Instance.ClearUI();
+
+            LocalData data = GodhomeEloCounter.Instance._localData;
             string textUI = "";
             textUI += $"Global Stats\n\n";
 
@@ -131,6 +150,8 @@ namespace GodhomeEloCounter
             textUI += $"Wins: {totalAttunedWins + totalAscendedWins + totalRadiantWins} / Losses: {totalAttunedLosses + totalAscendedLosses + totalRadiantLosses}\n";
             textUI += $"Time: {FormatTimeSpan(totalAttunedTime + totalAscendedTime + totalRadiantTime)}\n";
 
+            LayoutRoot layout = new(true);
+
             new TextObject(layout)
             {
                 HorizontalAlignment = HorizontalAlignment.Right,
@@ -140,6 +161,8 @@ namespace GodhomeEloCounter
                 Text = textUI,
                 Padding = new(20)
             };
+
+            GodhomeEloCounter.Instance.layouts.Add(layout);
         }
 
         public static string FormatTimeSpan(TimeSpan timeSpan)

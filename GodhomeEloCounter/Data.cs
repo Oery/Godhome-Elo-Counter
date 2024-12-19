@@ -8,12 +8,14 @@ namespace GodhomeEloCounter {
     public class LocalData { 
         public List<Boss> bosses = [];
 
-        public void UpdateBoss(string sceneName, int tier, bool hasWon, TimeSpan timeSpan, double baseELO) {
-            Boss boss = FindOrCreateBoss(sceneName, tier, baseELO);
+        public void UpdateBoss(string sceneName, int tier, bool hasWon, TimeSpan timeSpan) {
+            Boss boss = FindOrCreateBoss(sceneName, tier);
             boss.Update(hasWon, timeSpan);
         }
 
-        public Boss FindOrCreateBoss(string sceneName, int tier, double baseELO) {
+        public Boss FindOrCreateBoss(string sceneName, int tier) {
+            double baseELO = GodhomeEloCounter.Instance.modSettings.baseELO;
+
             foreach (Boss boss in bosses) {
                 if (boss.sceneName == sceneName && boss.tier == tier) {
                     if (boss.wins + boss.losses == 0) {

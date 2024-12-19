@@ -1,4 +1,4 @@
-using MagicUI.Core;
+﻿using MagicUI.Core;
 using Modding;
 using System;
 using System.Collections;
@@ -16,7 +16,7 @@ namespace GodhomeEloCounter
 
         public override string GetVersion() => "1.2";
 
-        private LocalData _localData = new();
+        public LocalData _localData = new();
         public void OnLoadLocal(LocalData data) => _localData = data;
         public LocalData OnSaveLocal() => _localData;
 
@@ -49,7 +49,7 @@ namespace GodhomeEloCounter
                         values: ["Yes", "No"],
                         applySetting: (value) => {
                             modSettings.hideBossName = value == 0;
-                            RefreshUI(currentScene, tier);
+                            ModUI.SpawnBossUI(currentScene, tier);
                         },
                         loadSetting: () => modSettings.hideBossName ? 0 : 1
                     ),
@@ -59,7 +59,7 @@ namespace GodhomeEloCounter
                         values: ["Yes", "No"],
                         applySetting: (value) => {
                             modSettings.hideWinstreak = value == 0;
-                            RefreshUI(currentScene, tier);
+                            ModUI.SpawnBossUI(currentScene, tier);
                         },
                         loadSetting: () => modSettings.hideWinstreak ? 0 : 1
                     ),
@@ -69,7 +69,7 @@ namespace GodhomeEloCounter
                         values: ["Yes", "No"],
                         applySetting: (value) => {
                             modSettings.hideWinsLosses = value == 0;
-                            RefreshUI(currentScene, tier);
+                            ModUI.SpawnBossUI(currentScene, tier);
                         },
                         loadSetting: () => modSettings.hideWinsLosses ? 0 : 1
                     ),
@@ -79,7 +79,7 @@ namespace GodhomeEloCounter
                         values: ["Yes", "No"],
                         applySetting: (value) => {
                             modSettings.hideTimeSpent = value == 0;
-                            RefreshUI(currentScene, tier);
+                            ModUI.SpawnBossUI(currentScene, tier);
                         },
                         loadSetting: () => modSettings.hideTimeSpent ? 0 : 1
                     ),
@@ -89,7 +89,7 @@ namespace GodhomeEloCounter
                         values: ["Yes", "No"],
                         applySetting: (value) => {
                             modSettings.hideMatchHistory = value == 0;
-                            RefreshUI(currentScene, tier);
+                            ModUI.SpawnBossUI(currentScene, tier);
                         },
                         loadSetting: () => modSettings.hideMatchHistory ? 0 : 1
                     ),
@@ -153,7 +153,7 @@ namespace GodhomeEloCounter
                                 applySetting: (value) => {
                                     modSettings.hideUIinFights = value == 0;
                                     if (modSettings.hideUIinFights) ClearUI();
-                                    else RefreshUI(currentScene, tier);
+                                    else ModUI.SpawnBossUI(currentScene, tier);
                                 },
                                 loadSetting: () => modSettings.hideUIinFights ? 0 : 1
                             ),
@@ -258,15 +258,7 @@ namespace GodhomeEloCounter
 
         private void OnBossSummaryBoardShow(On.BossSummaryBoard.orig_Show orig, BossSummaryBoard self)
         {
-            ClearUI();
-
-            if (!modSettings.hideUIinHoG)
-            {
-                LayoutRoot layout = new(true);
-                ModUI.SpawnGlobalStatsUI(layout, _localData);
-                layouts.Add(layout);
-            }
-
+            if (!modSettings.hideUIinHoG) ModUI.SpawnGlobalStatsUI();
             orig(self);
         }
 
@@ -278,15 +270,7 @@ namespace GodhomeEloCounter
 
         private void OnBossLevelMenu(On.BossChallengeUI.orig_Setup orig, BossChallengeUI self, BossStatue bossStatue, string bossNameSheet, string bossNameKey, string descriptionSheet, string descriptionKey)
         {
-            ClearUI();
-
-            if (!modSettings.hideUIinHoG)
-            {
-                LayoutRoot layout = new(true);
-                ModUI.SpawnAllTierBossUI(layout, _localData, bossNameKey, modSettings.baseELO);
-                layouts.Add(layout);
-            }
-
+            if (!modSettings.hideUIinHoG) ModUI.SpawnAllTierBossUI(bossNameKey);
             orig(self, bossStatue, bossNameSheet, bossNameKey, descriptionSheet, descriptionKey);
         }
 
@@ -298,7 +282,7 @@ namespace GodhomeEloCounter
 
         public bool ToggleButtonInsideMenu => true;
 
-        private readonly List<LayoutRoot> layouts = [];
+        public readonly List<LayoutRoot> layouts = [];
 
         private int OnDamageTaken(int damage)
         {
@@ -323,7 +307,7 @@ namespace GodhomeEloCounter
             _startTime = DateTime.Now;
 
             if (modSettings.hideUIinFights) ClearUI();
-            else RefreshUI(currentScene, tier);
+            else ModUI.SpawnBossUI(currentScene, tier);
         }
 
         private void OnBossExit(string sceneName) 
@@ -339,9 +323,9 @@ namespace GodhomeEloCounter
             _endTime = DateTime.Now;
 
             TimeSpan timeSpan = _endTime - _startTime;
-            _localData.UpdateBoss(currentScene, tier, has_won, timeSpan, modSettings.baseELO);
+            _localData.UpdateBoss(currentScene, tier, has_won, timeSpan);
 
-            if (!modSettings.hideUIinHoG) RefreshUI(currentScene, tier);
+            if (!modSettings.hideUIinHoG) ModUI.SpawnBossUI(currentScene, tier);
             else ClearUI();
 
             currentScene = sceneName;
@@ -362,17 +346,9 @@ namespace GodhomeEloCounter
             return name;
         }
 
-        private void RefreshUI(string sceneName, int tier)
+        public void ClearUI()
         {
-            ClearUI();
-            LayoutRoot layout_ui = new(true);
-            ModUI.SpawnBossUI(layout_ui, _localData.FindOrCreateBoss(sceneName, tier, modSettings.baseELO), modSettings);
-            layouts.Add(layout_ui);
-        }
-
-        private void ClearUI()
-        {
-            foreach (var layout in layouts)
+            foreach (var layout in GodhomeEloCounter.Instance.layouts)
             {
                 layout.Destroy();
             }
