@@ -1,4 +1,4 @@
-﻿using MagicUI.Core;
+using MagicUI.Core;
 using Modding;
 using System;
 using System.Collections;
@@ -28,7 +28,7 @@ namespace GodhomeEloCounter
         private bool isPlayerDead;
         private string currentScene;
         private string lastBossScene;
-        private readonly List<string> whitelistedScenes = ["GG_Workshop", "GG_Atrium"];
+        private readonly List<string> whitelistedScenes = ["GG_Workshop", "GG_Atrium", "GG_Mighty_Zote"];
 
         private int tier = 0;
 
