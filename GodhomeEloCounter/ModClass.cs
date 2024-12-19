@@ -140,6 +140,13 @@ namespace GodhomeEloCounter
                                 }
                             ),
                             new HorizontalOption(
+                                name: "Natural Time",
+                                description: "Ex: 12.3 Hours",
+                                values: ["Yes", "No"],
+                                applySetting: (value) => modSettings.naturalTime = value == 0,
+                                loadSetting: () => modSettings.naturalTime ? 0 : 1
+                            ),
+                            new HorizontalOption(
                                 name: "Hide UI in combat",
                                 description: "Stats are hidden when fighting bosses",
                                 values: ["Yes", "No"],
