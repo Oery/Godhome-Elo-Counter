@@ -144,24 +144,34 @@ namespace GodhomeEloCounter
 
         public static string FormatTimeSpan(TimeSpan timeSpan)
         {
-            int totalHours = (int)timeSpan.TotalHours;
-            int minutes = timeSpan.Minutes;
-            int seconds = timeSpan.Seconds;
+            if (GodhomeEloCounter.Instance.modSettings.naturalTime)
+            {
+                if (timeSpan.TotalHours >= 1) return $"{timeSpan.TotalHours:F1} Hours";
+                if (timeSpan.TotalMinutes >= 1) return $"{timeSpan.TotalMinutes:F1} Minutes";
+                return $"{timeSpan.TotalSeconds:F1} Seconds";
+            }
 
-            // For times less than an hour, only show minutes and seconds
-            if (totalHours == 0)
+            else
             {
-                return $"{minutes:D2}:{seconds:D2}";
+                int totalHours = (int)timeSpan.TotalHours;
+                int minutes = timeSpan.Minutes;
+                int seconds = timeSpan.Seconds;
+
+                // For times less than an hour, only show minutes and seconds
+                if (totalHours == 0)
+                {
+                    return $"{minutes:D2}:{seconds:D2}";
+                }
+                
+                // For times less than 100 hours, show hours:minutes:seconds
+                if (totalHours < 100)
+                {
+                    return $"{totalHours:D2}:{minutes:D2}:{seconds:D2}";
+                }
+                
+                // For very large times, show total hours without padding
+                return $"{totalHours}:{minutes:D2}:{seconds:D2}";
             }
-            
-            // For times less than 100 hours, show hours:minutes:seconds
-            if (totalHours < 100)
-            {
-                return $"{totalHours:D2}:{minutes:D2}:{seconds:D2}";
-            }
-            
-            // For very large times, show total hours without padding
-            return $"{totalHours}:{minutes:D2}:{seconds:D2}";
         }
     }
 }

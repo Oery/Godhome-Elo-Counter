@@ -20,7 +20,7 @@ namespace GodhomeEloCounter
         public void OnLoadLocal(LocalData data) => _localData = data;
         public LocalData OnSaveLocal() => _localData;
 
-        private ModSettings modSettings = new();
+        public ModSettings modSettings = new();
         public void OnLoadGlobal(ModSettings data) => modSettings = data;
         public ModSettings OnSaveGlobal() => modSettings;
 

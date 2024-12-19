@@ -39,5 +39,6 @@ namespace GodhomeEloCounter {
         public bool hideWinstreak = false;
         public bool hideMatchHistory = false;
         public bool hideTimeSpent = false;
+        public bool naturalTime = true;
     }
 }
