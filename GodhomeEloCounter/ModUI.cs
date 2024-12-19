@@ -31,6 +31,9 @@ namespace GodhomeEloCounter
 
         public static void SpawnAllTierBossUI(LayoutRoot layout, LocalData data, string statueName, double baseELO) {
             string sceneName = BossMappings.GetSceneFromStatue(statueName);
+
+            // If the scene name is null, it means that the statue doesn't have an arena scene linked, which means we cannot track data. Absent mappings will cause the game to open a bugged UI.
+            if (sceneName == null) return;
             
             string textUI = "";
             textUI += $"{BossMappings.GetDisplayFromScene(sceneName)}\n\n";
