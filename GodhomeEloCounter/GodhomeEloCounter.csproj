@@ -75,10 +75,10 @@
             <HintPath>$(HollowKnightRefs)/GalaxyCSharp.dll</HintPath>
         </Reference>
         <Reference Include="MagicUI">
-          <HintPath>D:\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\Mods\MagicUI\MagicUI.dll</HintPath>
+            <HintPath>$(HollowKnightRefs)/Mods/MagicUI/MagicUI.dll</HintPath>
         </Reference>
         <Reference Include="Satchel">
-            <HintPath>D:\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\Mods\Satchel\Satchel.dll</HintPath>
+            <HintPath>$(HollowKnightRefs)/Mods/Satchel/Satchel.dll</HintPath>
         </Reference>
         <Reference Include="MMHOOK_Assembly-CSharp">
             <HintPath>$(HollowKnightRefs)/MMHOOK_Assembly-CSharp.dll</HintPath>
