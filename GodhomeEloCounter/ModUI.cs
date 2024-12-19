@@ -15,7 +15,7 @@ namespace GodhomeEloCounter
             textUI += $"Peak: {boss.RoundedPeakElo()}\n";
             if (!settings.hideWinstreak) textUI += $"Streak: {boss.streak} / Best: {boss.bestWinStreak}\n";
             if (!settings.hideWinsLosses) textUI += $"Wins: {boss.wins} / Losses: {boss.losses}\n";
-            if (!settings.hideTimeSpent) textUI += $"Time: {boss.timeSpent:hh\\:mm\\:ss}\n";
+            if (!settings.hideTimeSpent) textUI += $"Time: {FormatTimeSpan(boss.timeSpent)}\n";
             if (!settings.hideMatchHistory) textUI += $"{boss.matchHistory}\n";
 
             new TextObject(layout)
@@ -44,7 +44,7 @@ namespace GodhomeEloCounter
             textUI +=  $"Peak: {attuned.RoundedPeakElo()}\n";
             textUI +=  $"Streak: {attuned.streak} / Best: {attuned.bestWinStreak}\n";
             textUI +=  $"Wins: {attuned.wins} / Losses: {attuned.losses}\n";
-            textUI +=  $"Time: {attuned.timeSpent:hh\\:mm\\:ss}\n";
+            textUI += $"Time: {FormatTimeSpan(attuned.timeSpent)}\n";
             if (attuned.matchHistory.Length > 0) textUI += $"{attuned.matchHistory}\n";
 
             Boss ascended = data.FindOrCreateBoss(sceneName, 1, baseELO);
@@ -53,7 +53,7 @@ namespace GodhomeEloCounter
             textUI +=  $"Peak: {ascended.RoundedPeakElo()}\n";
             textUI +=  $"Streak: {ascended.streak} / Best: {ascended.bestWinStreak}\n";
             textUI +=  $"Wins: {ascended.wins} / Losses: {ascended.losses}\n";
-            textUI +=  $"Time: {ascended.timeSpent:hh\\:mm\\:ss}\n";
+            textUI += $"Time: {FormatTimeSpan(ascended.timeSpent)}\n";
             if (ascended.matchHistory.Length > 0) textUI += $"{ascended.matchHistory}\n";
 
             Boss radiant = data.FindOrCreateBoss(sceneName, 2, baseELO);
@@ -62,7 +62,7 @@ namespace GodhomeEloCounter
             textUI +=  $"Peak: {radiant.RoundedPeakElo()}\n";
             textUI +=  $"Streak: {radiant.streak} / Best: {radiant.bestWinStreak}\n";
             textUI +=  $"Wins: {radiant.wins} / Losses: {radiant.losses}\n";
-            textUI +=  $"Time: {radiant.timeSpent:hh\\:mm\\:ss}\n";
+            textUI += $"Time: {FormatTimeSpan(radiant.timeSpent)}\n";
             if (radiant.matchHistory.Length > 0) textUI += $"{radiant.matchHistory}\n";
 
             new TextObject(layout)
@@ -114,22 +114,22 @@ namespace GodhomeEloCounter
             textUI += "Attuned\n";
             textUI += $"ELO: {averageAttunedELO}\n";
             textUI += $"Wins: {totalAttunedWins} / Losses: {totalAttunedLosses}\n";
-            textUI += $"Time: {totalAttunedTime:hh\\:mm\\:ss}\n\n";
+            textUI += $"Time: {FormatTimeSpan(totalAttunedTime)}\n\n";
 
             textUI += "Ascended\n";
             textUI += $"ELO: {averageAscendedELO}\n";
             textUI += $"Wins: {totalAscendedWins} / Losses: {totalAscendedLosses}\n";
-            textUI += $"Time: {totalAscendedTime:hh\\:mm\\:ss}\n\n";
+            textUI += $"Time: {FormatTimeSpan(totalAscendedTime)}\n\n";
 
             textUI += "Radiant\n";
             textUI += $"ELO: {averageRadiantELO}\n";
             textUI += $"Wins: {totalRadiantWins} / Losses: {totalRadiantLosses}\n";
-            textUI += $"Time: {totalRadiantTime:hh\\:mm\\:ss}\n\n";
+            textUI += $"Time: {FormatTimeSpan(totalRadiantTime)}\n\n";
 
             textUI += "Grand Total\n";
             textUI += $"ELO: {globalELO}\n";
             textUI += $"Wins: {totalAttunedWins + totalAscendedWins + totalRadiantWins} / Losses: {totalAttunedLosses + totalAscendedLosses + totalRadiantLosses}\n";
-            textUI += $"Time: {totalAttunedTime + totalAscendedTime + totalRadiantTime:hh\\:mm\\:ss}\n";
+            textUI += $"Time: {FormatTimeSpan(totalAttunedTime + totalAscendedTime + totalRadiantTime)}\n";
 
             new TextObject(layout)
             {
@@ -140,6 +140,28 @@ namespace GodhomeEloCounter
                 Text = textUI,
                 Padding = new(20)
             };
+        }
+
+        public static string FormatTimeSpan(TimeSpan timeSpan)
+        {
+            int totalHours = (int)timeSpan.TotalHours;
+            int minutes = timeSpan.Minutes;
+            int seconds = timeSpan.Seconds;
+
+            // For times less than an hour, only show minutes and seconds
+            if (totalHours == 0)
+            {
+                return $"{minutes:D2}:{seconds:D2}";
+            }
+            
+            // For times less than 100 hours, show hours:minutes:seconds
+            if (totalHours < 100)
+            {
+                return $"{totalHours:D2}:{minutes:D2}:{seconds:D2}";
+            }
+            
+            // For very large times, show total hours without padding
+            return $"{totalHours}:{minutes:D2}:{seconds:D2}";
         }
     }
 }
