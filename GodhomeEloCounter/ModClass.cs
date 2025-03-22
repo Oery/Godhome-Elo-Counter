@@ -1,9 +1,11 @@
-using MagicUI.Core;
-using Modding;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+
 using UnityEngine;
+using Modding;
+using MagicUI.Core;
 using Satchel.BetterMenus;
 
 namespace GodhomeEloCounter
@@ -40,6 +42,8 @@ namespace GodhomeEloCounter
 
         private Menu MenuRef;
         private Menu UIMenuPageRef;
+
+        public readonly ComboTracker comboTracker = new();
 
         public MenuScreen GetMenuScreen(MenuScreen modListMenu, ModToggleDelegates? modtoggledelegates) 
         {
@@ -85,6 +89,16 @@ namespace GodhomeEloCounter
                             ModUI.SpawnBossUI(currentScene, tier);
                         },
                         loadSetting: () => modSettings.hideTimeSpent ? 0 : 1
+                    ),
+                    new HorizontalOption(
+                        name: "Hide Combo",
+                        description: "Combo will not be displayed",
+                        values: ["Yes", "No"],
+                        applySetting: (value) => {
+                            modSettings.hideCombo = value == 0;
+                            ModUI.SpawnBossUI(currentScene, tier);
+                        },
+                        loadSetting: () => modSettings.hideCombo ? 0 : 1
                     ),
                     new HorizontalOption(
                         name: "Hide Match History",
@@ -250,7 +264,14 @@ namespace GodhomeEloCounter
             On.BossChallengeUI.Setup += OnBossLevelMenu;
             On.BossSummaryBoard.Show += OnBossSummaryBoardShow;
             On.BossSummaryBoard.Hide += OnBossSummaryBoardHide;
+            On.HealthManager.TakeDamage += OnTakeDamage;
             On.QuitToMenu.Start += OnQuitToMenuStart;
+        }
+
+        private void OnTakeDamage(On.HealthManager.orig_TakeDamage orig, HealthManager self, HitInstance hitInstance)
+        {
+            orig(self, hitInstance);
+            comboTracker.Update(self, hitInstance);
         }
 
         private IEnumerator OnQuitToMenuStart(On.QuitToMenu.orig_Start orig, QuitToMenu self)
@@ -301,6 +322,8 @@ namespace GodhomeEloCounter
         {
             isPlayerFighting = true;
             isPlayerDead = false;
+
+            comboTracker.Reset();
 
             currentScene = sceneName;
 
@@ -356,6 +379,12 @@ namespace GodhomeEloCounter
                 layout.Destroy();
             }
             layouts.Clear();
+        }
+
+        public void UpdateUI()
+        {
+            ClearUI();
+            ModUI.SpawnBossUI(currentScene, tier);
         }
 
         public void Unload()

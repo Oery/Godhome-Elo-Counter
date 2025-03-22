@@ -15,12 +15,28 @@ namespace GodhomeEloCounter
             Boss boss = data.FindOrCreateBoss(sceneName, tier);
             string textUI = "";
 
+            // Display Boss Name
             if (!settings.hideBossName) textUI += $"{BossMappings.GetDisplayFromScene(boss.sceneName)}\n";
+
+            // Display ELO
             textUI += $"Elo: {boss.RoundedElo()} ({boss.RoundedElo() - boss.RoundedLastElo()})\n";
             textUI += $"Peak: {boss.RoundedPeakElo()}\n";
+
+            // Display Winstreak
             if (!settings.hideWinstreak) textUI += $"Streak: {boss.streak} / Best: {boss.bestWinStreak}\n";
+
+            // Display Wins/Losses
             if (!settings.hideWinsLosses) textUI += $"Wins: {boss.wins} / Losses: {boss.losses}\n";
+
+            // Display Time Spent
             if (!settings.hideTimeSpent) textUI += $"Time: {FormatTimeSpan(boss.timeSpent)}\n";
+
+            // Display Combo
+            int comboDamage = GodhomeEloCounter.Instance.comboTracker.comboDamage;
+            int previousComboDamage = GodhomeEloCounter.Instance.comboTracker.previousComboDamage;
+            if (!settings.hideCombo) textUI += $"Combo: {comboDamage} ({previousComboDamage})\n";
+
+            // Display Match History
             if (!settings.hideMatchHistory) textUI += $"{boss.matchHistory}\n";
 
             LayoutRoot layout = new(true);
