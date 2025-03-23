@@ -6,7 +6,6 @@ namespace GodhomeEloCounter
 	public class Boss(string sceneName, int tier)
     {
 		public string sceneName = sceneName;
-
         public int tier = tier;
 
 		public double elo;
@@ -26,8 +25,8 @@ namespace GodhomeEloCounter
 
 		public TimeSpan timeSpent;
 
-        public void Update(bool hasWon, TimeSpan timeSpan) {
-			UpdateTime(timeSpan);
+        public void Update(bool hasWon, float duration) {
+			UpdateTime(duration);
 			UpdateWins(hasWon);
 			UpdateStreak(hasWon);
 			UpdateELO(hasWon);
@@ -71,7 +70,7 @@ namespace GodhomeEloCounter
             if (elo > peakElo) { peakElo = elo; }
 		}
 
-		private void UpdateTime(TimeSpan timeSpan) { timeSpent += timeSpan; }
+		private void UpdateTime(float duration) { timeSpent += TimeSpan.FromSeconds(duration); }
 
         private void UpdateMatchHistory(bool hasWon) {
             if (matchHistory.Length >= 15) matchHistory = matchHistory.Substring(2);

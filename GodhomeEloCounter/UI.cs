@@ -1,43 +1,58 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using MagicUI.Core;
 using MagicUI.Elements;
 
 namespace GodhomeEloCounter
 {
-    public static class ModUI
+    public class UI
     {
-        public static void SpawnBossUI(string sceneName, int tier) {
-            GodhomeEloCounter.Instance.ClearUI();
+        private readonly List<LayoutRoot> layouts = [];
+
+        public void Clear() 
+        {
+            foreach (LayoutRoot layout in layouts) layout.Destroy();
+            layouts.Clear();
+        }
+
+        public void DrawBossStats() 
+        {
+            Clear();
 
             LocalData data = GodhomeEloCounter.Instance._localData;
-            ModSettings settings = GodhomeEloCounter.Instance.modSettings;
-            Boss boss = data.FindOrCreateBoss(sceneName, tier);
-            string textUI = "";
+            Config settings = GodhomeEloCounter.Instance.config;
+            string bossName = GodhomeEloCounter.Instance.bossFight.Boss;
+            int tier = GodhomeEloCounter.Instance.bossFight.Tier;
+
+            Boss boss = data.FindOrCreateBoss(bossName, tier);
+
+            StringBuilder textUI = new();
 
             // Display Boss Name
-            if (!settings.hideBossName) textUI += $"{BossMappings.GetDisplayFromScene(boss.sceneName)}\n";
+            if (!settings.hideBossName) textUI.Append($"{BossMappings.GetDisplayFromScene(boss.sceneName)}\n");
 
             // Display ELO
-            textUI += $"Elo: {boss.RoundedElo()} ({boss.RoundedElo() - boss.RoundedLastElo()})\n";
-            textUI += $"Peak: {boss.RoundedPeakElo()}\n";
+            textUI.Append($"Elo: {boss.RoundedElo()} ({boss.RoundedElo() - boss.RoundedLastElo()})\n");
+            textUI.Append($"Peak: {boss.RoundedPeakElo()}\n");
 
             // Display Winstreak
-            if (!settings.hideWinstreak) textUI += $"Streak: {boss.streak} / Best: {boss.bestWinStreak}\n";
+            if (!settings.hideWinstreak) textUI.Append($"Streak: {boss.streak} / Best: {boss.bestWinStreak}\n");
 
             // Display Wins/Losses
-            if (!settings.hideWinsLosses) textUI += $"Wins: {boss.wins} / Losses: {boss.losses}\n";
+            if (!settings.hideWinsLosses) textUI.Append($"Wins: {boss.wins} / Losses: {boss.losses}\n");
 
             // Display Time Spent
-            if (!settings.hideTimeSpent) textUI += $"Time: {FormatTimeSpan(boss.timeSpent)}\n";
+            if (!settings.hideTimeSpent) textUI.Append($"Time: {FormatTimeSpan(boss.timeSpent)}\n");
 
             // Display Combo
-            int comboDamage = GodhomeEloCounter.Instance.comboTracker.comboDamage;
-            int previousComboDamage = GodhomeEloCounter.Instance.comboTracker.previousComboDamage;
-            if (!settings.hideCombo) textUI += $"Combo: {comboDamage} ({previousComboDamage})\n";
+            int comboDamage = GodhomeEloCounter.Instance.bossFight.ComboDamage;
+            int prevComboDamage = GodhomeEloCounter.Instance.bossFight.PrevComboDamage;
+            if (!settings.hideCombo) textUI.Append($"Combo: {comboDamage} ({prevComboDamage})\n");
 
             // Display Match History
-            if (!settings.hideMatchHistory) textUI += $"{boss.matchHistory}\n";
+            if (!settings.hideMatchHistory) textUI.Append($"{boss.matchHistory}\n");
 
             LayoutRoot layout = new(true);
 
@@ -46,16 +61,17 @@ namespace GodhomeEloCounter
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Top,
                 FontSize = 20,
-                Font = UI.TrajanBold,
-                Text = textUI,
+                Font = MagicUI.Core.UI.TrajanBold,
+                Text = textUI.ToString(),
                 Padding = new(20)
             };
 
-            GodhomeEloCounter.Instance.layouts.Add(layout);
+            layouts.Add(layout);
         }
 
-        public static void SpawnAllTierBossUI(string statueName) {
-            GodhomeEloCounter.Instance.ClearUI();
+        public void DrawBossTiersStats(string statueName) 
+        {
+            Clear();
 
             LocalData data = GodhomeEloCounter.Instance._localData;
             string sceneName = BossMappings.GetSceneFromStatue(statueName);
@@ -100,20 +116,21 @@ namespace GodhomeEloCounter
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Top,
                 FontSize = 20,
-                Font = UI.TrajanBold,
+                Font = MagicUI.Core.UI.TrajanBold,
                 Text = textUI,
                 Padding = new(20)
             };
 
-            GodhomeEloCounter.Instance.layouts.Add(layout);
+            layouts.Add(layout);
         }
 
-        public static void SpawnGlobalStatsUI() {
-            GodhomeEloCounter.Instance.ClearUI();
+        public void DrawGlobalStats() 
+        {
+            Clear();
 
             LocalData data = GodhomeEloCounter.Instance._localData;
-            string textUI = "";
-            textUI += $"Global Stats\n\n";
+            StringBuilder textUI = new();
+            textUI.Append($"Global Stats\n\n");
 
             int totalAttunedWins = data.bosses.Where(boss => boss.tier == 0).Sum(boss => boss.wins);
             int totalAscendedWins = data.bosses.Where(boss => boss.tier == 1).Sum(boss => boss.wins);
@@ -146,25 +163,25 @@ namespace GodhomeEloCounter
             TimeSpan totalRadiantTime = data.bosses.Where(boss => boss.tier == 2)
                 .Aggregate(TimeSpan.Zero, (sum, boss) => sum + boss.timeSpent);
 
-            textUI += "Attuned\n";
-            textUI += $"ELO: {averageAttunedELO}\n";
-            textUI += $"Wins: {totalAttunedWins} / Losses: {totalAttunedLosses}\n";
-            textUI += $"Time: {FormatTimeSpan(totalAttunedTime)}\n\n";
+            textUI.Append("Attuned\n");
+            textUI.Append($"ELO: {averageAttunedELO}\n");
+            textUI.Append($"Wins: {totalAttunedWins} / Losses: {totalAttunedLosses}\n");
+            textUI.Append($"Time: {FormatTimeSpan(totalAttunedTime)}\n\n");
 
-            textUI += "Ascended\n";
-            textUI += $"ELO: {averageAscendedELO}\n";
-            textUI += $"Wins: {totalAscendedWins} / Losses: {totalAscendedLosses}\n";
-            textUI += $"Time: {FormatTimeSpan(totalAscendedTime)}\n\n";
+            textUI.Append("Ascended\n");
+            textUI.Append($"ELO: {averageAscendedELO}\n");
+            textUI.Append($"Wins: {totalAscendedWins} / Losses: {totalAscendedLosses}\n");
+            textUI.Append($"Time: {FormatTimeSpan(totalAscendedTime)}\n\n");
 
-            textUI += "Radiant\n";
-            textUI += $"ELO: {averageRadiantELO}\n";
-            textUI += $"Wins: {totalRadiantWins} / Losses: {totalRadiantLosses}\n";
-            textUI += $"Time: {FormatTimeSpan(totalRadiantTime)}\n\n";
+            textUI.Append("Radiant\n");
+            textUI.Append($"ELO: {averageRadiantELO}\n");
+            textUI.Append($"Wins: {totalRadiantWins} / Losses: {totalRadiantLosses}\n");
+            textUI.Append($"Time: {FormatTimeSpan(totalRadiantTime)}\n\n");
 
-            textUI += "Grand Total\n";
-            textUI += $"ELO: {globalELO}\n";
-            textUI += $"Wins: {totalAttunedWins + totalAscendedWins + totalRadiantWins} / Losses: {totalAttunedLosses + totalAscendedLosses + totalRadiantLosses}\n";
-            textUI += $"Time: {FormatTimeSpan(totalAttunedTime + totalAscendedTime + totalRadiantTime)}\n";
+            textUI.Append("Grand Total\n");
+            textUI.Append($"ELO: {globalELO}\n");
+            textUI.Append($"Wins: {totalAttunedWins + totalAscendedWins + totalRadiantWins} / Losses: {totalAttunedLosses + totalAscendedLosses + totalRadiantLosses}\n");
+            textUI.Append($"Time: {FormatTimeSpan(totalAttunedTime + totalAscendedTime + totalRadiantTime)}\n");
 
             LayoutRoot layout = new(true);
 
@@ -173,44 +190,30 @@ namespace GodhomeEloCounter
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Top,
                 FontSize = 20,
-                Font = UI.TrajanBold,
-                Text = textUI,
+                Font = MagicUI.Core.UI.TrajanBold,
+                Text = textUI.ToString(),
                 Padding = new(20)
             };
 
-            GodhomeEloCounter.Instance.layouts.Add(layout);
+            layouts.Add(layout);
         }
 
-        public static string FormatTimeSpan(TimeSpan timeSpan)
+        public static string FormatTimeSpan(TimeSpan time)
         {
-            if (GodhomeEloCounter.Instance.modSettings.naturalTime)
+            if (GodhomeEloCounter.Instance.config.naturalTime)
             {
-                if (timeSpan.TotalHours >= 1) return $"{timeSpan.TotalHours:F1} Hours";
-                if (timeSpan.TotalMinutes >= 1) return $"{timeSpan.TotalMinutes:F1} Minutes";
-                return $"{timeSpan.TotalSeconds:F1} Seconds";
+                if (time.TotalHours >= 1) return $"{time.TotalHours:F1} Hours";
+                if (time.TotalMinutes >= 1) return $"{time.TotalMinutes:F1} Minutes";
+                return $"{time.TotalSeconds:F1} Seconds";
             }
 
-            else
-            {
-                int totalHours = (int)timeSpan.TotalHours;
-                int minutes = timeSpan.Minutes;
-                int seconds = timeSpan.Seconds;
+            int totalHours = (int)time.TotalHours;
+            int minutes = time.Minutes;
+            int seconds = time.Seconds;
 
-                // For times less than an hour, only show minutes and seconds
-                if (totalHours == 0)
-                {
-                    return $"{minutes:D2}:{seconds:D2}";
-                }
-                
-                // For times less than 100 hours, show hours:minutes:seconds
-                if (totalHours < 100)
-                {
-                    return $"{totalHours:D2}:{minutes:D2}:{seconds:D2}";
-                }
-                
-                // For very large times, show total hours without padding
-                return $"{totalHours}:{minutes:D2}:{seconds:D2}";
-            }
+            if (totalHours == 0) return $"{minutes:D2}:{seconds:D2}";
+            if (totalHours < 100) return $"{totalHours:D2}:{minutes:D2}:{seconds:D2}";
+            return $"{totalHours}:{minutes:D2}:{seconds:D2}";
         }
     }
 }

@@ -8,13 +8,13 @@ namespace GodhomeEloCounter {
     public class LocalData { 
         public List<Boss> bosses = [];
 
-        public void UpdateBoss(string sceneName, int tier, bool hasWon, TimeSpan timeSpan) {
+        public void UpdateBoss(string sceneName, int tier, bool hasWon, float duration) {
             Boss boss = FindOrCreateBoss(sceneName, tier);
-            boss.Update(hasWon, timeSpan);
+            boss.Update(hasWon, duration);
         }
 
         public Boss FindOrCreateBoss(string sceneName, int tier) {
-            double baseELO = GodhomeEloCounter.Instance.modSettings.baseELO;
+            double baseELO = GodhomeEloCounter.Instance.config.baseELO;
 
             foreach (Boss boss in bosses) {
                 if (boss.sceneName == sceneName && boss.tier == tier) {
@@ -32,7 +32,7 @@ namespace GodhomeEloCounter {
     }
 
     [Serializable]
-    public class ModSettings {
+    public class Config {
         public int baseELO = 1000;
         public bool hideUIinFights = false;
         public bool hideUIinHoG = false;
