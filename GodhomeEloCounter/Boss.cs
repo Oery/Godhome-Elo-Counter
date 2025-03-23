@@ -72,7 +72,8 @@ namespace GodhomeEloCounter
 
 		private void UpdateTime(float duration) { timeSpent += TimeSpan.FromSeconds(duration); }
 
-        private void UpdateMatchHistory(bool hasWon) {
+        private void UpdateMatchHistory(bool hasWon) 
+		{
             if (matchHistory.Length >= 15) matchHistory = matchHistory.Substring(2);
             if (matchHistory.Length != 0) matchHistory += " ";
             if (hasWon) matchHistory += "W";
