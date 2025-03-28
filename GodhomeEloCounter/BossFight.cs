@@ -1,8 +1,9 @@
-using System;
 using UnityEngine;
 
-namespace GodhomeEloCounter {
-    public class BossFight(string boss, int tier) {
+namespace GodhomeEloCounter
+{
+    public class BossFight(string boss, int tier)
+    {
         public string Boss { get; private set; } = boss;
         public int Tier { get; private set; } = tier;
 

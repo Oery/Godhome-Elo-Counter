@@ -1,15 +1,18 @@
 using Modding;
 using Satchel.BetterMenus;
 
-namespace GodhomeEloCounter {
-    public class ConfigMenu {
+namespace GodhomeEloCounter
+{
+    public class ConfigMenu
+    {
         private Menu MenuRef;
         private Menu UIMenuPageRef;
-        
-        public MenuScreen GetScreen(MenuScreen modListMenu, ModToggleDelegates? modtoggledelegates) {
+
+        public MenuScreen GetScreen(MenuScreen modListMenu, ModToggleDelegates? modtoggledelegates)
+        {
             GodhomeEloCounter mod = GodhomeEloCounter.Instance;
             Config config = mod.config;
-            
+
             UIMenuPageRef ??= new Menu
             (
                 name: "UI Customization",
@@ -91,7 +94,7 @@ namespace GodhomeEloCounter {
                     Blueprints.CreateToggle
                     (
                         toggleDelegates: modtoggledelegates.Value,
-                        name: "Elo Counter Enabled",  
+                        name: "Elo Counter Enabled",
                         description: "Let you disable this mod entirely"
                     ),
                     new HorizontalOption
@@ -169,8 +172,8 @@ namespace GodhomeEloCounter {
                     new MenuButton
                     (
                         name: "Reset ELO",
-                        description: "Reset your ELO for all bosses", 
-                        submitAction: (_) => 
+                        description: "Reset your ELO for all bosses",
+                        submitAction: (_) =>
                         {
                             MenuRef.ShowDialog(Blueprints.CreateDialogMenu
                             (
@@ -181,7 +184,7 @@ namespace GodhomeEloCounter {
                                 {
                                     switch (selection)
                                     {
-                                        case "Yes": 
+                                        case "Yes":
                                             mod._localData.bosses.ForEach(boss => {
                                                 boss.elo = config.baseELO;
                                                 boss.lastElo = config.baseELO;
@@ -201,8 +204,8 @@ namespace GodhomeEloCounter {
                     new MenuButton
                     (
                         name: "Reset Last Boss ELO",
-                        description: "Reset your ELO for the last boss and difficulty", 
-                        submitAction: (_) => 
+                        description: "Reset your ELO for the last boss and difficulty",
+                        submitAction: (_) =>
                         {
                             MenuRef.ShowDialog(Blueprints.CreateDialogMenu
                             (
@@ -213,7 +216,7 @@ namespace GodhomeEloCounter {
                                 {
                                     switch (selection)
                                     {
-                                        case "Yes": 
+                                        case "Yes":
                                             Boss boss = mod._localData.bosses
                                                 .Find(b => b.tier == mod.bossFight.Tier && b.sceneName == mod.sceneManager.LastBossScene);
                                             boss.elo = config.baseELO;
