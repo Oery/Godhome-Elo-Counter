@@ -16,6 +16,8 @@ namespace GodhomeEloCounter
 
         public void UpdateComboCounter(HitInstance hit)
         {
+            if (Boss == "") return;
+
             if (Time.time >= _lastHitTime + 1)
             {
                 PrevComboDamage = ComboDamage;
@@ -37,6 +39,7 @@ namespace GodhomeEloCounter
 
             mod.UI.Clear();
             if (!mod.config.hideUIinHoG) mod.UI.DrawBossStats();
+            Boss = "";
         }
     }
 }
