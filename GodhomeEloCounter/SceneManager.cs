@@ -39,13 +39,13 @@ namespace GodhomeEloCounter
                 mod.bossFight = new(boss, tier);
 
                 LastBossScene = boss;
-                
+
                 mod.UI.Clear();
                 if (!mod.config.hideUIinFights) mod.UI.DrawBossStats();
             }
 
             // Boss Room -> Hall of Gods
-            if (nextScene == "GG_Workshop" && IsBossRoom(PrevScene)) mod.bossFight.End();
+            if (nextScene == "GG_Workshop" && IsBossRoom(PrevScene)) mod.bossFight?.End();
 
             // Hall of Gods -> Anywhere
             if (nextScene.StartsWith("GG_Atrium") || !nextScene.StartsWith("GG_")) mod.UI.Clear();
