@@ -81,7 +81,7 @@ namespace GodhomeEloCounter
         // TODO: Replace This with an OnDeath event
         private int OnDamageTaken(int damage)
         {
-            bossFight.IsPlayerDead = damage > PlayerData.instance.health;
+            bossFight.IsPlayerDead = damage >= PlayerData.instance.health;
             return damage;
         }
 
