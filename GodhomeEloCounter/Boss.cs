@@ -2,13 +2,13 @@ using System;
 
 namespace GodhomeEloCounter
 {
-	[Serializable]
-	public class Boss(string sceneName, int tier)
+    [Serializable]
+    public class Boss(string sceneName, int tier)
     {
-		public string sceneName = sceneName;
+        public string sceneName = sceneName;
         public int tier = tier;
 
-		public double elo;
+        public double elo;
         public double lastElo;
         public double peakElo;
 
@@ -16,48 +16,49 @@ namespace GodhomeEloCounter
         public int RoundedLastElo() => (int)Math.Round(lastElo);
         public int RoundedPeakElo() => (int)Math.Round(peakElo);
 
-		public int streak;
-		public int bestWinStreak;
+        public int streak;
+        public int bestWinStreak;
 
-		public int wins;
-		public int losses;
+        public int wins;
+        public int losses;
         public string matchHistory = "";
 
-		public TimeSpan timeSpent;
+        public TimeSpan timeSpent;
 
-        public void Update(bool hasWon, float duration) {
-			UpdateTime(duration);
-			UpdateWins(hasWon);
-			UpdateStreak(hasWon);
-			UpdateELO(hasWon);
+        public void Update(bool hasWon, float duration)
+        {
+            UpdateTime(duration);
+            UpdateWins(hasWon);
+            UpdateStreak(hasWon);
+            UpdateELO(hasWon);
             UpdateMatchHistory(hasWon);
-		}
+        }
 
-		private void UpdateWins(bool hasWon)
-		{
-			if (hasWon) { wins++; }
-			else { losses++; }
-		}
+        private void UpdateWins(bool hasWon)
+        {
+            if (hasWon) { wins++; }
+            else { losses++; }
+        }
 
-		private void UpdateStreak(bool hasWon)
-		{
-			if (hasWon)
-			{
-				if (streak > 0) { streak++; }
-				else { streak = 1; }
-			}
+        private void UpdateStreak(bool hasWon)
+        {
+            if (hasWon)
+            {
+                if (streak > 0) { streak++; }
+                else { streak = 1; }
+            }
 
-			else
-			{
-				if (streak < 0) { streak--; }
-				else { streak = -1; }
-			}
+            else
+            {
+                if (streak < 0) { streak--; }
+                else { streak = -1; }
+            }
 
-			if (streak > bestWinStreak) { bestWinStreak = streak; }
-		}
+            if (streak > bestWinStreak) { bestWinStreak = streak; }
+        }
 
-		private void UpdateELO(bool hasWon)
-		{
+        private void UpdateELO(bool hasWon)
+        {
             const double difficulty = 1600.0;
             const double kFactor = 32.0;
 
@@ -68,17 +69,17 @@ namespace GodhomeEloCounter
             elo += kFactor * (actualScore - expectedScore);
 
             if (elo > peakElo) { peakElo = elo; }
-		}
+        }
 
-		private void UpdateTime(float duration) { timeSpent += TimeSpan.FromSeconds(duration); }
+        private void UpdateTime(float duration) { timeSpent += TimeSpan.FromSeconds(duration); }
 
-        private void UpdateMatchHistory(bool hasWon) 
-		{
+        private void UpdateMatchHistory(bool hasWon)
+        {
             if (matchHistory.Length >= 15) matchHistory = matchHistory.Substring(2);
             if (matchHistory.Length != 0) matchHistory += " ";
             if (hasWon) matchHistory += "W";
             else matchHistory += "L";
         }
-	}
+    }
 }
 

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 
-namespace GodhomeEloCounter {
+namespace GodhomeEloCounter
+{
     public class BossMapping(string statueName, string sceneName, string displayName)
     {
         public string StatueName { get; private set; } = statueName;
@@ -8,7 +9,8 @@ namespace GodhomeEloCounter {
         public string DisplayName { get; private set; } = displayName;
     }
 
-    public static class BossMappings {
+    public static class BossMappings
+    {
         private static readonly Dictionary<string, BossMapping> statueToMapping;
         private static readonly Dictionary<string, BossMapping> sceneToMapping;
 
@@ -17,8 +19,8 @@ namespace GodhomeEloCounter {
             statueToMapping = [];
             sceneToMapping = [];
 
-            var mappings = new List<BossMapping>
-            {
+            List<BossMapping> mappings =
+            [
                 new("NAME_BIGFLY", "GG_Gruz_Mother", "Gruz Mother"),
                 new("NAME_BIGBUZZER", "GG_Vengefly", "Vengefly King"),
                 new("NAME_MAWLEK", "GG_Brooding_Mawlek", "Brooding Mawlek"),
@@ -67,9 +69,9 @@ namespace GodhomeEloCounter {
                 // Not really compatible with them for now so they're fully merged to avoid menu crashes
                 new("NAME_THK", "GG_Hollow_Knight", "Pure Vessel"),
                 new("NAME_RADIANCE", "GG_Radiance", "Absolute Radiance"),
-            };
+            ];
 
-            foreach (var mapping in mappings)
+            foreach (BossMapping mapping in mappings)
             {
                 statueToMapping[mapping.StatueName] = mapping;
                 sceneToMapping[mapping.SceneName] = mapping;
@@ -80,17 +82,17 @@ namespace GodhomeEloCounter {
         {
             if (statueName.EndsWith("_V") && statueName != "NAME_MANTIS_LORD_V") { statueName = statueName.Substring(0, statueName.Length - 2); }
 
-            return statueToMapping.TryGetValue(statueName, out var mapping) 
-                ? mapping.SceneName 
+            return statueToMapping.TryGetValue(statueName, out var mapping)
+                ? mapping.SceneName
                 : null;
         }
 
         public static string GetStatueFromScene(string sceneName)
         {
             if (sceneName.EndsWith("_V") && sceneName != "GG_Mantis_Lords_V") { sceneName = sceneName.Substring(0, sceneName.Length - 2); }
-            
-            return sceneToMapping.TryGetValue(sceneName, out var mapping) 
-                ? mapping.StatueName 
+
+            return sceneToMapping.TryGetValue(sceneName, out var mapping)
+                ? mapping.StatueName
                 : null;
         }
 
@@ -98,8 +100,8 @@ namespace GodhomeEloCounter {
         {
             if (statueName.EndsWith("_V") && statueName != "NAME_MANTIS_LORD_V") { statueName = statueName.Substring(0, statueName.Length - 2); }
 
-            return statueToMapping.TryGetValue(statueName, out var mapping) 
-                ? mapping.DisplayName 
+            return statueToMapping.TryGetValue(statueName, out var mapping)
+                ? mapping.DisplayName
                 : null;
         }
 
@@ -107,8 +109,8 @@ namespace GodhomeEloCounter {
         {
             if (sceneName.EndsWith("_V") && sceneName != "GG_Mantis_Lords_V") { sceneName = sceneName.Substring(0, sceneName.Length - 2); }
 
-            return sceneToMapping.TryGetValue(sceneName, out var mapping) 
-                ? mapping.DisplayName 
+            return sceneToMapping.TryGetValue(sceneName, out var mapping)
+                ? mapping.DisplayName
                 : null;
         }
     }

@@ -11,7 +11,7 @@ namespace GodhomeEloCounter
     {
         internal static GodhomeEloCounter Instance;
 
-        public GodhomeEloCounter() : base("Godhome Elo Counter") {}
+        public GodhomeEloCounter() : base("Godhome Elo Counter") { }
 
         public override string GetVersion()
         {
@@ -32,7 +32,7 @@ namespace GodhomeEloCounter
         public bool ToggleButtonInsideMenu => true;
 
         // CustomMenuMod Interface
-        public MenuScreen GetMenuScreen(MenuScreen modListMenu, ModToggleDelegates? modtoggledelegates) 
+        public MenuScreen GetMenuScreen(MenuScreen modListMenu, ModToggleDelegates? modtoggledelegates)
         {
             return configMenu.GetScreen(modListMenu, modtoggledelegates);
         }
