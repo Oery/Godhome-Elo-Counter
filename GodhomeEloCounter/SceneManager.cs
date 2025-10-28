@@ -1,26 +1,29 @@
 using System.Collections.Generic;
 
-namespace GodhomeEloCounter {
+namespace GodhomeEloCounter
+{
 
-    public class SceneManager {
+    public class SceneManager
+    {
         public string PrevScene { get; private set; }
         public string LastBossScene { get; private set; }
 
-        private readonly List<string> _nonBossRooms = 
+        private readonly List<string> _nonBossRooms =
         [
             "GG_Workshop",
             "GG_Atrium",
             "GG_Mighty_Zote"
         ];
 
-        private bool IsBossRoom(string scene) {
+        private bool IsBossRoom(string scene)
+        {
             return !_nonBossRooms.Contains(scene);
         }
 
         private string NormalizeBossName(string boss)
         {
             if (boss == "GG_Mantis_Lords_V") return boss;
-            if (boss.EndsWith("_V")) return boss.Substring(0, boss.Length - 2); 
+            if (boss.EndsWith("_V")) return boss.Substring(0, boss.Length - 2);
             return boss;
         }
 
