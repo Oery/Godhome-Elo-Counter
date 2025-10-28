@@ -47,9 +47,9 @@ namespace GodhomeEloCounter
             if (!settings.hideTimeSpent) textUI.Append($"Time: {FormatTimeSpan(boss.timeSpent)}\n");
 
             // Display Combo
-            int comboDamage = GodhomeEloCounter.Instance.bossFight.ComboDamage;
-            int prevComboDamage = GodhomeEloCounter.Instance.bossFight.PrevComboDamage;
-            if (!settings.hideCombo) textUI.Append($"Combo: {comboDamage} ({prevComboDamage})\n");
+            // int comboDamage = GodhomeEloCounter.Instance.bossFight.ComboDamage;
+            // int prevComboDamage = GodhomeEloCounter.Instance.bossFight.PrevComboDamage;
+            // if (!settings.hideCombo) textUI.Append($"Combo: {comboDamage} ({prevComboDamage})\n");
 
             // Display Match History
             if (!settings.hideMatchHistory) textUI.Append($"{boss.matchHistory}\n");

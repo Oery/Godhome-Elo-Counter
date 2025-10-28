@@ -8,27 +8,27 @@ namespace GodhomeEloCounter
         public int Tier { get; private set; } = tier;
 
         public bool IsPlayerDead { get; set; } = false;
-        public int ComboDamage { get; private set; } = 0;
-        public int PrevComboDamage { get; private set; } = 0;
+        // public int ComboDamage { get; private set; } = 0;
+        // public int PrevComboDamage { get; private set; } = 0;
 
         private readonly float _start = Time.time;
-        private float _lastHitTime = 0;
+        // private float _lastHitTime = 0;
 
-        public void UpdateComboCounter(HitInstance hit)
-        {
-            if (Boss == "") return;
+        // public void UpdateComboCounter(HitInstance hit)
+        // {
+        //     if (Boss == "") return;
 
-            if (Time.time >= _lastHitTime + 1)
-            {
-                PrevComboDamage = ComboDamage;
-                ComboDamage = 0;
-            }
+        //     if (Time.time >= _lastHitTime + 1)
+        //     {
+        //         PrevComboDamage = ComboDamage;
+        //         ComboDamage = 0;
+        //     }
 
-            ComboDamage += (int)(hit.DamageDealt * hit.Multiplier);
-            _lastHitTime = Time.time;
+        //     ComboDamage += (int)(hit.DamageDealt * hit.Multiplier);
+        //     _lastHitTime = Time.time;
 
-            GodhomeEloCounter.Instance.UI.DrawBossStats();
-        }
+        //     GodhomeEloCounter.Instance.UI.DrawBossStats();
+        // }
 
         public void End()
         {

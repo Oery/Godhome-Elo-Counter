@@ -55,7 +55,7 @@ namespace GodhomeEloCounter
             On.BossChallengeUI.Setup += OnBossLevelMenu;
             On.BossSummaryBoard.Show += OnBossSummaryBoardShow;
             On.BossSummaryBoard.Hide += OnBossSummaryBoardHide;
-            On.HealthManager.TakeDamage += OnTakeDamage;
+            // On.HealthManager.TakeDamage += OnTakeDamage;
             On.QuitToMenu.Start += OnQuitToMenuStart;
         }
 
@@ -85,11 +85,11 @@ namespace GodhomeEloCounter
             return damage;
         }
 
-        private void OnTakeDamage(On.HealthManager.orig_TakeDamage orig, HealthManager self, HitInstance hitInstance)
-        {
-            orig(self, hitInstance);
-            bossFight.UpdateComboCounter(hitInstance);
-        }
+        // private void OnTakeDamage(On.HealthManager.orig_TakeDamage orig, HealthManager self, HitInstance hitInstance)
+        // {
+        //     orig(self, hitInstance);
+        //     bossFight.UpdateComboCounter(hitInstance);
+        // }
 
         private IEnumerator OnQuitToMenuStart(On.QuitToMenu.orig_Start orig, QuitToMenu self)
         {
