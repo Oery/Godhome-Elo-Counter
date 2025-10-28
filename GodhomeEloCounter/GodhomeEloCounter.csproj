@@ -16,7 +16,7 @@
         <Product>GodhomeEloCounter</Product>
         <Description>A Hollow Knight Mod</Description>
         <Copyright>Copyright © 2024</Copyright>
-        <Version>1.4.0</Version>
+        <Version>1.4.1</Version>
         <OutputPath>bin\$(Configuration)\</OutputPath>
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
